@@ -57,7 +57,7 @@ if (menuBtn && siteNav) {
 }
 
 // Active nav on scroll
-const sectionIds = ["connectivity", "platform", "geminy", "problem", "solution", "delivery", "insights", "contact"];
+const sectionIds = ["connectivity", "platform", "geminy", "problem", "solution", "delivery", "contact"];
 const sections = sectionIds
   .map((id) => document.getElementById(id))
   .filter(Boolean);
@@ -125,7 +125,6 @@ const circuitSectionIds = [
   "problem",
   "solution",
   "delivery",
-  "insights",
   "contact",
 ];
 
