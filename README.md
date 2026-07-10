@@ -35,6 +35,10 @@ Single-page site at the canonical URL `https://www.advancedautoponics.com/`.
 - **Structured data** — JSON-LD `@graph` with Organization, WebSite, WebPage, SoftwareApplication (Geminy IoT), and Service (AgTech automation). No FAQPage (no FAQ content on-page)
 - **Semantics** — one `h1`, section landmarks with `aria-labelledby`, logo alt text, footer nav anchors aligned with primary nav
 
+## Deploy notes
+
+Cloudflare Workers/Pages allows assets up to **25 MiB** each. Keep videos in `assets/` under that limit (hero background is compressed for a muted loop). Local uncompressed backups may live as `assets/*.original.mp4` and are gitignored.
+
 ## Run locally
 
 ```bash

@@ -11,3 +11,6 @@ node_modules/
 .env
 .env.*
 *.pem
+
+# Local uncompressed video backups (keep deployable assets under 25 MiB)
+assets/*.original.mp4
