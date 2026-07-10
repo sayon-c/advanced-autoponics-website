@@ -109,7 +109,7 @@ function updateScrollProgress() {
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 updateScrollProgress();
 
-// Scroll-driven circuit trace (logo-inspired)
+// Scroll-driven circuit trace — right gutter, AA logo language
 const scrollCircuit = document.getElementById("scrollCircuit");
 const circuitTrunkTrack = document.getElementById("circuitTrunkTrack");
 const circuitTrunkActive = document.getElementById("circuitTrunkActive");
@@ -128,11 +128,16 @@ const circuitSectionIds = [
   "contact",
 ];
 
-const TRUNK_X = 14;
-const BRANCH_LEN = 16;
-const NODE_R = 3;
+// Trunk sits near the right edge; branches jog LEFT (inward) like the logo.
+const TRUNK_X = 42;
+const BRANCH_LENS = [14, 20, 12, 18, 14, 22, 16];
+const NODE_R = 2.75;
+const NODE_R_SOLID = 2.35;
 
 let circuitLayout = null;
+let circuitProgressTarget = 0;
+let circuitProgressCurrent = 0;
+let circuitRaf = null;
 
 function buildCircuitLayout() {
   if (!scrollCircuit) return null;
@@ -142,36 +147,84 @@ function buildCircuitLayout() {
 
   if (circuitHeight <= 0 || docHeight <= 0) return null;
 
-  const trunkStart = 8;
-  const trunkEnd = circuitHeight - 8;
+  const trunkStart = 12;
+  const trunkEnd = circuitHeight - 12;
   const trunkSpan = trunkEnd - trunkStart;
 
   const branches = circuitSectionIds
     .map((id) => document.getElementById(id))
     .filter(Boolean)
     .map((section, index) => {
-      const sectionY = section.offsetTop + section.offsetHeight * 0.2;
+      const sectionY = section.offsetTop + section.offsetHeight * 0.18;
       const y = trunkStart + (sectionY / docHeight) * trunkSpan;
+      const minGap = 22;
       return {
         id: section.id,
-        y: Math.max(trunkStart + 16 + index * 2, Math.min(trunkEnd - 4, y)),
+        y: Math.max(
+          trunkStart + 20 + index * minGap,
+          Math.min(trunkEnd - 16, y)
+        ),
         frac: sectionY / docHeight,
       };
     });
+
+  // Keep branch nodes from stacking when sections cluster.
+  for (let i = 1; i < branches.length; i++) {
+    if (branches[i].y - branches[i - 1].y < 20) {
+      branches[i].y = Math.min(trunkEnd - 16, branches[i - 1].y + 20);
+    }
+  }
 
   return { trunkStart, trunkEnd, trunkSpan, branches, circuitHeight };
 }
 
 function branchPath(y, index) {
-  const stub = index % 2 === 1 ? 6 : 0;
-  const startY = y - stub;
+  const len = BRANCH_LENS[index % BRANCH_LENS.length];
+  const endX = TRUNK_X - len;
+  // Alternate: straight stub vs right-angle jog (logo PCB language)
+  const jog = index % 2 === 1 ? (index % 4 === 1 ? -9 : 7) : 0;
+  const nodeY = y + jog;
+  const solid = index % 3 !== 1;
+
+  const d = jog
+    ? `M ${TRUNK_X} ${y} H ${TRUNK_X - 6} V ${nodeY} H ${endX}`
+    : `M ${TRUNK_X} ${y} H ${endX}`;
+
   return {
-    d: stub
-      ? `M ${TRUNK_X} ${y} V ${startY} H ${TRUNK_X + BRANCH_LEN}`
-      : `M ${TRUNK_X} ${y} H ${TRUNK_X + BRANCH_LEN}`,
-    nodeX: TRUNK_X + BRANCH_LEN,
-    nodeY: startY,
+    d,
+    nodeX: endX,
+    nodeY,
+    solid,
+    approxLen: len + (jog ? 6 + Math.abs(jog) : 0),
   };
+}
+
+function ensureCircuitCaps() {
+  if (!circuitTrunkTrack?.parentNode) return;
+
+  ["track", "active"].forEach((layer) => {
+    const group =
+      layer === "track"
+        ? circuitTrunkTrack.parentNode
+        : circuitTrunkActive?.parentNode;
+    if (!group) return;
+
+    let top = group.querySelector(".scroll-circuit-cap--top");
+    let bottom = group.querySelector(".scroll-circuit-cap--bottom");
+
+    if (!top) {
+      top = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      top.setAttribute("class", "scroll-circuit-cap scroll-circuit-cap--top");
+      top.setAttribute("r", "2.5");
+      group.appendChild(top);
+    }
+    if (!bottom) {
+      bottom = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      bottom.setAttribute("class", "scroll-circuit-cap scroll-circuit-cap--bottom");
+      bottom.setAttribute("r", "2.5");
+      group.appendChild(bottom);
+    }
+  });
 }
 
 function renderCircuitPaths() {
@@ -183,35 +236,49 @@ function renderCircuitPaths() {
   circuitTrunkTrack.setAttribute("d", trunkD);
   circuitTrunkActive?.setAttribute("d", trunkD);
 
+  ensureCircuitCaps();
+
+  document.querySelectorAll(".scroll-circuit-cap--top").forEach((cap) => {
+    cap.setAttribute("cx", String(TRUNK_X));
+    cap.setAttribute("cy", String(trunkStart));
+  });
+  document.querySelectorAll(".scroll-circuit-cap--bottom").forEach((cap) => {
+    cap.setAttribute("cx", String(TRUNK_X));
+    cap.setAttribute("cy", String(trunkEnd));
+  });
+
   circuitBranchesTrack.innerHTML = "";
   circuitBranchesActive.innerHTML = "";
 
   branches.forEach((branch, i) => {
-    const { d, nodeX, nodeY } = branchPath(branch.y, i);
+    const { d, nodeX, nodeY, solid, approxLen } = branchPath(branch.y, i);
 
     [circuitBranchesTrack, circuitBranchesActive].forEach((group) => {
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       path.setAttribute("d", d);
       path.setAttribute("class", "scroll-circuit-branch");
       path.dataset.section = branch.id;
+      path.dataset.len = String(approxLen);
       group.appendChild(path);
 
       const node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       node.setAttribute("cx", String(nodeX));
       node.setAttribute("cy", String(nodeY));
-      node.setAttribute("r", String(NODE_R));
-      node.setAttribute("class", "scroll-circuit-node");
+      node.setAttribute("r", String(solid ? NODE_R_SOLID : NODE_R));
+      node.setAttribute(
+        "class",
+        `scroll-circuit-node${solid ? " is-solid" : ""}`
+      );
       node.dataset.section = branch.id;
       group.appendChild(node);
     });
   });
 }
 
-function updateScrollCircuit() {
-  if (!scrollCircuit || !circuitLayout || reduceMotion) return;
+function paintScrollCircuit(progress) {
+  if (!scrollCircuit || !circuitLayout) return;
 
   const { trunkStart, trunkSpan, branches } = circuitLayout;
-  const progress = getScrollFraction();
   const dotY = trunkStart + progress * trunkSpan;
 
   if (circuitTrunkActive) {
@@ -229,6 +296,18 @@ function updateScrollCircuit() {
     circuitDotGlow.setAttribute("cy", String(dotY));
   }
 
+  const activeGroup = circuitTrunkActive?.parentNode;
+  const activeCapTop = activeGroup?.querySelector(".scroll-circuit-cap--top");
+  const activeCapBottom = activeGroup?.querySelector(
+    ".scroll-circuit-cap--bottom"
+  );
+  if (activeCapTop) {
+    activeCapTop.style.opacity = progress > 0.01 ? "1" : "0";
+  }
+  if (activeCapBottom) {
+    activeCapBottom.style.opacity = progress > 0.97 ? "1" : "0";
+  }
+
   const activeBranches = circuitBranchesActive?.querySelectorAll(
     "[data-section]"
   );
@@ -238,15 +317,41 @@ function updateScrollCircuit() {
     const branch = branches.find((b) => b.id === sectionId);
     if (!branch) return;
 
-    const isActive = progress >= branch.frac - 0.02;
+    const isActive = progress >= branch.frac - 0.015;
     el.style.opacity = isActive ? "1" : "0";
 
-    if (el.tagName === "path" && isActive) {
-      const len = el.getTotalLength?.() || BRANCH_LEN + 6;
+    if (el.tagName === "path") {
+      const len = Number(el.dataset.len) || el.getTotalLength?.() || 20;
       el.style.strokeDasharray = `${len}`;
-      el.style.strokeDashoffset = "0";
+      el.style.strokeDashoffset = isActive ? "0" : `${len}`;
+      if (isActive) {
+        el.style.transition = "stroke-dashoffset 0.45s var(--ease-out, ease-out), opacity 0.4s ease-out";
+      }
     }
   });
+}
+
+function tickScrollCircuit() {
+  circuitProgressCurrent +=
+    (circuitProgressTarget - circuitProgressCurrent) * 0.16;
+
+  if (Math.abs(circuitProgressTarget - circuitProgressCurrent) < 0.0004) {
+    circuitProgressCurrent = circuitProgressTarget;
+    circuitRaf = null;
+  } else {
+    circuitRaf = requestAnimationFrame(tickScrollCircuit);
+  }
+
+  paintScrollCircuit(circuitProgressCurrent);
+}
+
+function updateScrollCircuit() {
+  if (!scrollCircuit || !circuitLayout || reduceMotion) return;
+
+  circuitProgressTarget = getScrollFraction();
+  if (!circuitRaf) {
+    circuitRaf = requestAnimationFrame(tickScrollCircuit);
+  }
 }
 
 function initScrollCircuit() {
@@ -261,7 +366,9 @@ function initScrollCircuit() {
     if (mobileQuery.matches) return;
     circuitLayout = buildCircuitLayout();
     renderCircuitPaths();
-    updateScrollCircuit();
+    circuitProgressCurrent = getScrollFraction();
+    circuitProgressTarget = circuitProgressCurrent;
+    paintScrollCircuit(circuitProgressCurrent);
   }
 
   refresh();
@@ -273,6 +380,10 @@ function initScrollCircuit() {
   mobileQuery.addEventListener("change", (e) => {
     if (e.matches) {
       scrollCircuit.style.display = "none";
+      if (circuitRaf) {
+        cancelAnimationFrame(circuitRaf);
+        circuitRaf = null;
+      }
     } else {
       scrollCircuit.style.display = "";
       refresh();

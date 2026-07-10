@@ -1874,16 +1874,31 @@ img {
   opacity: 0.5;
 }
 
-/* ---------- Scroll circuit indicator ---------- */
+/* ---------- Scroll circuit indicator (right gutter) ---------- */
 .scroll-circuit {
   position: fixed;
   top: var(--header-h);
-  left: 0;
+  right: max(4px, env(safe-area-inset-right, 0px));
+  left: auto;
   bottom: 0;
-  width: 44px;
+  width: 56px;
   z-index: 5;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 5%,
+    #000 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 5%,
+    #000 94%,
+    transparent 100%
+  );
 }
 
 .scroll-circuit-svg {
@@ -1894,63 +1909,89 @@ img {
 }
 
 .scroll-circuit-trunk {
-  stroke-width: 1.5;
+  stroke-width: 1.25;
   stroke-linecap: square;
   stroke-linejoin: miter;
   fill: none;
 }
 
 .scroll-circuit-track .scroll-circuit-trunk {
-  stroke: rgba(110, 193, 119, 0.18);
+  stroke: rgba(110, 193, 119, 0.2);
 }
 
 .scroll-circuit-active .scroll-circuit-trunk {
   stroke: var(--accent);
+  stroke-width: 1.5;
 }
 
 .scroll-circuit-branch {
-  stroke-width: 1.5;
+  stroke-width: 1.25;
   stroke-linecap: square;
   stroke-linejoin: miter;
   fill: none;
 }
 
 .scroll-circuit-track .scroll-circuit-branch {
-  stroke: rgba(110, 193, 119, 0.14);
+  stroke: rgba(110, 193, 119, 0.16);
 }
 
 .scroll-circuit-active .scroll-circuit-branch {
   stroke: var(--accent);
+  stroke-width: 1.35;
 }
 
 .scroll-circuit-node {
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 1.25;
 }
 
 .scroll-circuit-track .scroll-circuit-node {
-  stroke: rgba(110, 193, 119, 0.2);
+  stroke: rgba(110, 193, 119, 0.22);
+}
+
+.scroll-circuit-track .scroll-circuit-node.is-solid {
+  fill: rgba(110, 193, 119, 0.18);
 }
 
 .scroll-circuit-active .scroll-circuit-branch,
 .scroll-circuit-active .scroll-circuit-node {
   opacity: 0;
-  transition: opacity 0.35s var(--ease-out);
+  transition: opacity 0.4s var(--ease-out);
 }
 
 .scroll-circuit-active .scroll-circuit-node {
   stroke: var(--accent);
+}
+
+.scroll-circuit-active .scroll-circuit-node.is-solid {
   fill: var(--accent);
+}
+
+.scroll-circuit-active .scroll-circuit-node:not(.is-solid) {
+  fill: none;
+}
+
+.scroll-circuit-cap {
+  fill: none;
+  stroke: rgba(110, 193, 119, 0.28);
+  stroke-width: 1.25;
+}
+
+.scroll-circuit-active .scroll-circuit-cap {
+  stroke: var(--accent);
+  fill: var(--accent);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
 }
 
 .scroll-circuit-dot {
   fill: var(--accent);
   stroke: var(--off-black);
-  stroke-width: 1;
+  stroke-width: 1.25;
 }
 
 .scroll-circuit-dot-glow {
-  fill: rgba(110, 193, 119, 0.25);
+  fill: rgba(110, 193, 119, 0.22);
   stroke: none;
 }
 
