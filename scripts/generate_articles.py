@@ -9,6 +9,182 @@ ARTICLES_DIR = ROOT / "articles"
 
 ARTICLES = [
     {
+        "slug": "vertical-farming-energy-unit-economics",
+        "title": "Energy Costs and Unit Economics in Vertical Farming",
+        "meta": "How energy, lighting, and climate controls shape vertical farming unit economics after the 2025 industry reset — and what operators can do now.",
+        "date": "2026-07-18",
+        "date_display": "Jul 18, 2026",
+        "eyebrow": "Economics",
+        "lede": "After a brutal correction year for indoor farming, the operators still standing are the ones who treat kilowatt-hours like a crop input — measured, controlled, and tied to yield.",
+        "body": """
+<p>Vertical farming’s hardest lesson of the mid-2020s was not botanical. It was economic. Industry coverage of 2025 described a wave of restructurings and exits among capital-intensive indoor growers, alongside a sharp pullback in late-stage venture funding from the early-decade peak. The common thread was unit economics: facilities that could not keep energy, labor, and yield inside a workable band could not outrun their fixed costs.</p>
+
+<p>Energy sits at the center of that story. Lighting and HVAC are not overhead line items you optimize once at commissioning. They are continuous production costs that move with crop stage, climate strategy, and how tightly your controls actually run.</p>
+
+<h2>Why energy decides indoor margins</h2>
+<p>Indoor farms replace free sunlight with electricity. In fully lit vertical systems, lighting often dominates power draw, with humidity and temperature control close behind. When those subsystems are scheduled independently — or worse, managed by walkthroughs and sticky notes — you pay for over-lighting, over-cooling, and fighting your own dehumidification load.</p>
+<p>Field evaluations of smart CEA controls have shown that strategies such as automated daily light integral (DLI) management and variable-speed ventilation can unlock large electricity savings versus static schedules. The exact percentage depends on crop, climate zone, and baseline equipment — but the direction is clear: integrated controls are no longer optional polish. They are how you protect contribution margin.</p>
+
+<h2>Unit economics is an operations stack problem</h2>
+<p>Survivors in the post-hype market tend to share habits that look more like manufacturing than tech storytelling:</p>
+<ul>
+  <li><strong>Prove cost per harvestable unit before scaling rooms.</strong> Square footage without utilization and yield consistency is a liability.</li>
+  <li><strong>Locate for power and logistics, not only for brand proximity.</strong> High retail density does not help if your tariff structure makes leafy greens uncompetitive.</li>
+  <li><strong>Choose crops and formats that can carry the energy bill.</strong> Commodity lettuce at thin premiums is a brutal test of every kilowatt.</li>
+  <li><strong>Instrument the facility like a plant, not a showroom.</strong> If you cannot see lighting, climate, and fertigation on one timeline, you cannot manage cost.</li>
+</ul>
+
+<h2>Where automation and data actually move the needle</h2>
+<p>Buying more efficient LEDs helps. So do better fixtures and HVAC design. But hardware efficiency plateaus if the control layer still runs open-loop. The next gains come from coupling lighting setpoints, VPD strategy, irrigation events, and equipment state into one operational model — then letting edge intelligence flag drift before it becomes crop loss or wasted runtime.</p>
+<p>That is the Advanced Autoponics lens: a <a href="/#platform">unified data layer</a> across climate, irrigation, and sensors; controller-level AI for anomaly detection; and <a href="/#geminy">Geminy IoT</a> as the multi-site command center. Protocols such as BACnet, Modbus, and MQTT are how existing mechanical and grow systems join that model without a rip-and-replace. Related: <a href="/articles/bacnet-integration-for-cea/">BACnet integration for CEA</a> and <a href="/articles/unified-data-layer-for-greenhouses/">unified data layer for greenhouses</a>.</p>
+
+<h2>A practical energy discipline checklist</h2>
+<ol>
+  <li>Map the top energy consumers by zone and by crop recipe — not only by utility meter.</li>
+  <li>Correlate kWh with yield and quality so “savings” that hurt marketable product get caught early.</li>
+  <li>Replace static photoperiods with DLI-aware or stage-aware lighting strategies where fixtures and controls allow.</li>
+  <li>Coordinate dehumidification and irrigation so you are not paying to remove water you just added.</li>
+  <li>Keep safety and mechanical interlocks with the BMS while CEA automation owns grow-relevant setpoints and visibility.</li>
+</ol>
+
+<h2>The 2026 reality</h2>
+<p>Capital markets remain selective for unprofitable indoor operators. LED efficiency has improved versus earlier this decade, and automation costs continue to fall as industrial robotics and configurable controls migrate into agriculture — but none of that substitutes for a facility that can see and control its cost drivers in real time.</p>
+<p>Vertical farming is not over. Fragile energy ops stacks are. If your team still discovers overruns on the utility bill or after a quality complaint, you do not have an energy strategy — you have a lagging indicator.</p>
+
+<p>Talk with Advanced Autoponics about tying lighting, climate, and fertigation into one control surface. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+""",
+    },
+    {
+        "slug": "greenhouse-vs-vertical-farming-automation",
+        "title": "Greenhouse CEA vs Indoor Vertical: Where Automation Wins",
+        "meta": "Compare greenhouse CEA and indoor vertical farming on cost structure, climate risk, and automation — and where a unified controls stack creates the most leverage.",
+        "date": "2026-07-16",
+        "date_display": "Jul 16, 2026",
+        "eyebrow": "Strategy",
+        "lede": "Greenhouses remain the commercial backbone of CEA. Vertical farms still matter for the right crops. Automation wins where either model stops running on disconnected vendor islands.",
+        "body": """
+<p>Global CEA census reporting continues to show a familiar imbalance: greenhouses significantly outnumber vertical farms among commercial operators, with generally lower construction intensity and more established paths to profitability. That does not make vertical obsolete. It means operators should choose architecture for unit economics — then invest automation where the model is structurally weak.</p>
+
+<p>Advanced Autoponics works across both glass and indoor rooms. The control problem looks different in each — but the failure mode is often identical: climate, irrigation, sensors, and alerts never share one operational truth.</p>
+
+<h2>What greenhouses still do better</h2>
+<p>Sunlight is a free (if variable) light source. Greenhouses convert that into lower lighting OpEx and, in many markets, more familiar construction and labor patterns. Hybrid approaches — supplemental LED, screens, and precise fertigation — let growers chase consistency without paying for every photon. Energy and labor remain top cost pressures, but the baseline is often more forgiving than a fully lit rack facility.</p>
+<p>The automation win in greenhouses is usually integration: BACnet-heavy HVAC and screens, Modbus dosing skids, MQTT sensor networks, and a grow team that needs one view. See <a href="/articles/bacnet-integration-for-cea/">BACnet integration for CEA</a>.</p>
+
+<h2>Where vertical still earns its keep</h2>
+<p>Indoor vertical systems excel when you need extreme locality, tight food-safety narratives, high-value formats, or production that cannot depend on outdoor climate. They struggle when they compete head-to-head with field or greenhouse commodity greens on price alone — especially in high-tariff metros. After 2025’s consolidation wave, the credible vertical stories tend to emphasize focused crop portfolios, secured retail channels, and modular capacity tied to proven demand rather than speculative megafacilities.</p>
+<p>In those facilities, automation wins on labor density, recipe repeatability, and energy discipline. A rack farm without closed-loop visibility is a capital project waiting for an operations crisis. Background: <a href="/articles/why-vertical-farms-are-failing/">why vertical farms are failing</a> and <a href="/articles/vertical-farming-energy-unit-economics/">energy and unit economics</a>.</p>
+
+<h2>Hybrid models are not a compromise — they are a control design</h2>
+<p>Many 2026 roadmaps blend greenhouse scale with indoor finishing, nursery, or specialty lines. That only works if the data model spans both. Different mechanical systems, different protocols, same crop commitments. Operators who bolt on a separate cloud per vendor recreate the blind spots that killed earlier “smart farm” projects.</p>
+
+<h2>Where automation creates leverage in both models</h2>
+<ul>
+  <li><strong>Unified semantics.</strong> Zones, crops, and assets — not vendor point names — should drive the UI and alerts.</li>
+  <li><strong>Edge autonomy.</strong> Local controllers keep irrigation and climate safety alive when the WAN drops.</li>
+  <li><strong>Predictive visibility.</strong> Drift in VPD, EC, or equipment runtime should surface before yield does. Related: <a href="/articles/predictive-ai-for-grow-room-anomaly-detection/">predictive AI for grow-room anomaly detection</a>.</li>
+  <li><strong>Protocol honesty.</strong> Use BACnet, Modbus, MQTT, and OPC UA where they already exist instead of forcing a single proprietary stack. See <a href="/articles/mqtt-vs-modbus-vs-opc-ua-in-cea/">MQTT vs Modbus vs OPC UA</a>.</li>
+</ul>
+
+<h2>How to choose without ideology</h2>
+<p>Ask four questions before you pick glass, racks, or both:</p>
+<ol>
+  <li>What price and quality premium can this crop reliably command in this market?</li>
+  <li>What does power cost — and how variable is it — at the sites you can actually permit?</li>
+  <li>Can your labor model staff the facility without heroic overtime every harvest week?</li>
+  <li>Will your controls stack give one network across every facility you plan to operate?</li>
+</ol>
+<p>If the answers favor sunlight and acreage, build greenhouse-first and automate integration. If they favor density and locality with a crop that can carry the energy bill, vertical can work — with manufacturing-grade controls from day one.</p>
+
+<p>Advanced Autoponics builds brand-agnostic automation for both paths: on-site controllers, a <a href="/#platform">unified data layer</a>, and Geminy in the cloud so every site shares live views and commands. <a href="/#contact">Book a demo</a> · <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+""",
+    },
+    {
+        "slug": "cea-labor-shortage-controls-ai",
+        "title": "Labor Scarcity in CEA: Why Controls and AI Matter Now",
+        "meta": "CEA growers face persistent labor pressure. Learn how controls, automation, and controller-level AI reduce manual checks without waiting for full robotics.",
+        "date": "2026-07-14",
+        "date_display": "Jul 14, 2026",
+        "eyebrow": "Operations",
+        "lede": "Skilled grow labor is hard to hire and harder to keep. The facilities that scale in 2026 are the ones that stop using people as the integration layer between disconnected systems.",
+        "body": """
+<p>Ask commercial CEA operators what constrains growth and you will hear energy — and then labor, almost in the same breath. Industry surveys through 2025 continued to rank both among the top operating pressures. Robotics and “physical AI” are entering harvest and logistics, but most facilities still depend on people for scouting, setpoint changes, quality checks, and exception handling.</p>
+
+<p>The mistake is waiting for a humanoid robot to fix a workflow that is already broken. The immediate win is removing the need for humans to stitch systems together every shift.</p>
+
+<h2>Labor is often paying for missing visibility</h2>
+<p>When climate lives in one app, fertigation in another, and alerts arrive as texts nobody trusts, operators walk the facility to rebuild the truth. That walk is labor. So is the spreadsheet that reconciles yesterday’s EC readings. So is the evening call when a humidity spike was visible in three places and actionable in none.</p>
+<p>Automation that only adds more screens increases cognitive load. Automation that unifies signals and prioritizes exceptions reduces the hours spent hunting for problems. In practice, that means fewer “status rounds,” faster onboarding for new technicians, and less dependence on the one veteran who knows which HMI to trust.</p>
+<p>Training costs matter too. Every proprietary silo adds a learning curve. A single operational schema — zones, crops, assets, and alerts — lets new hires contribute sooner while senior growers focus on recipe improvement instead of system archaeology.</p>
+
+<h2>What “controls and AI” mean on a real grow floor</h2>
+<ul>
+  <li><strong>Closed-loop basics first.</strong> Stable irrigation, dosing, and climate loops cut firefighting before any model is trained.</li>
+  <li><strong>Controller-level intelligence.</strong> Edge AI can watch VPD, nutrient curves, and equipment runtime for drift patterns that humans notice too late.</li>
+  <li><strong>Plain-language summaries.</strong> Supervisors need “what matters this hour,” not a wall of raw points. That is the job of predictive visibility layers on top of a clean data model.</li>
+  <li><strong>Governed remote action.</strong> Multi-site managers should command from one interface — with clear write authority — instead of calling night shifts to click through HMIs.</li>
+</ul>
+<p>Advanced Autoponics packages that stack as a <a href="/#platform">unified data layer</a>, AI anomaly detection, and <a href="/#geminy">Geminy IoT</a> as the command center. Read <a href="/articles/predictive-ai-for-grow-room-anomaly-detection/">predictive AI for grow-room anomaly detection</a> and <a href="/articles/full-automation-without-custom-development/">full automation without custom development</a>.</p>
+
+<h2>Robotics help — after the data layer exists</h2>
+<p>High-profile operator moves to bring harvesting robotics in-house underline a broader trend: automation costs are falling as warehouse and industrial tech crosses into agriculture. Those systems still need clean schedules, reliable environment data, and exception workflows. A robot cannot save a facility that cannot keep setpoints and recipes consistent.</p>
+
+<h2>A labor-aware automation roadmap</h2>
+<ol>
+  <li>List the ten manual checks that consume the most skilled time each week.</li>
+  <li>Instrument those loops continuously and retire clipboard steps that duplicate sensors.</li>
+  <li>Normalize alerts so only actionable, prioritized events interrupt a shift.</li>
+  <li>Document who may write setpoints remotely — and what stays local for safety.</li>
+  <li>Only then evaluate task robotics for harvest, packing, or material movement.</li>
+</ol>
+
+<h2>People still matter — just not as middleware</h2>
+<p>The goal is not a dark factory fantasy. Growers remain essential for crop judgment, customer quality, and continuous improvement. What should disappear is the role of human-as-bus between BACnet climate, Modbus skids, and a vendor cloud. That role does not scale, and in a tight labor market it becomes the single point of failure.</p>
+
+<p>If your best growers spend their days reconciling systems instead of improving recipes, talk to Advanced Autoponics about an operations stack that earns back those hours. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+""",
+    },
+    {
+        "slug": "vertical-farming-after-the-hype",
+        "title": "Vertical Farming After the Hype: What Survived — and Why",
+        "meta": "What the 2025 vertical farming shakeout revealed about consolidation, profitability, and the operations discipline that defines CEA winners in 2026.",
+        "date": "2026-07-12",
+        "date_display": "Jul 12, 2026",
+        "eyebrow": "Industry",
+        "lede": "The hype cycle ended. What remains is smaller, more honest, and more operational — an industry learning to act like manufacturing with agricultural margins.",
+        "body": """
+<p>For roughly a decade, vertical farming sold a story of inevitable disruption: infinite local greens, software-like scale, and venture returns. Then the bill came due. Industry year-in-review reporting on 2025 described numerous bankruptcies and exits, a collapse in disclosed funding versus the 2021 peak, and a decisive end to the “raise big, scale fast, figure out economics later” playbook.</p>
+
+<p>That was painful. It was also clarifying. The question for 2026 is no longer whether indoor farming can grow plants. It is which operating models survive contact with power prices, labor markets, and retailers who pay for reliability — not slides.</p>
+
+<h2>What the shakeout actually selected for</h2>
+<p>Companies that endured tended to emphasize operational discipline over narrative: focused crop strategies, secured distribution, patient capacity expansion, and cost structures that could work at current scale. Consolidation also accelerated — mergers and platform combinations that pool technology, facilities, and retail reach instead of building every capability from scratch.</p>
+<p>Greenhouse-scale CEA operators, including large hybrid platforms assembled through acquisition, continue to demonstrate that sunlight-assisted production remains the volume backbone of controlled environment produce. Vertical capacity persists where the crop, market, and energy context justify it — not as a universal replacement for field agriculture.</p>
+
+<h2>What failed was not “tech” — it was incomplete systems</h2>
+<p>Many failed projects had impressive hardware. Fewer had a coherent operating system: shared data across climate and fertigation, predictive awareness, and automation that reduced labor and energy waste under real tariffs. Dashboards without a unified model became another place to look when something went wrong. For the deeper ops diagnosis, see <a href="/articles/why-vertical-farms-are-failing/">why vertical farms are failing</a>.</p>
+
+<h2>The intelligence layer is now a competitive asset</h2>
+<p>As capital stays selective, advantages compound for teams that treat every cycle as a data-generating event. Recipe tuning, equipment failure prediction, and energy optimization all depend on a durable schema — zones, assets, quality flags, and time series that mean the same thing across sites. That is why a <a href="/articles/unified-data-layer-for-greenhouses/">unified data layer</a> is not an IT nice-to-have; it is how institutional knowledge survives shift changes and facility expansion.</p>
+<p>AI adoption in CEA is rising, often embedded in climate and fertigation equipment. Growers still want transparency and control. Controller-level anomaly detection and cloud command centers earn trust when they reduce surprises rather than invent another black box. Related: <a href="/articles/predictive-ai-for-grow-room-anomaly-detection/">predictive AI for anomaly detection</a>.</p>
+
+<h2>What “good” looks like after the hype</h2>
+<ul>
+  <li><strong>Unit economics first.</strong> Prove contribution margin before multiplying rooms.</li>
+  <li><strong>Energy as a managed input.</strong> Lighting and HVAC strategy tied to crop stage and measured outcomes. See <a href="/articles/vertical-farming-energy-unit-economics/">energy and unit economics</a>.</li>
+  <li><strong>Labor redesign.</strong> People coach the system; they are not the integration bus. See <a href="/articles/cea-labor-shortage-controls-ai/">labor scarcity and controls</a>.</li>
+  <li><strong>Brand-agnostic integration.</strong> Keep mixed equipment; standardize the data and control layer.</li>
+  <li><strong>Multi-site sameness.</strong> One network, every facility — with edge autonomy when connectivity drops.</li>
+</ul>
+
+<h2>Advanced Autoponics’ view of the next chapter</h2>
+<p>We build the stack survivors need: industrial protocols in, a unified platform out, controller-level AI for early warning, and <a href="/#geminy">Geminy IoT</a> for command across locations. Whether you run greenhouse acres, indoor rooms, or a hybrid, the competitive difference is rarely another sensor brand. It is whether your team can see and act on the same truth in minutes.</p>
+<p>The CEA industry entering mid-decade is smaller than the hype predicted. It is also healthier when it tells the truth about costs. That is not a failure story. It is an industry growing up.</p>
+
+<p>If you are rebuilding after a tough site, planning a retrofit, or standardizing controls across facilities, <a href="/#contact">book a demo</a> with Advanced Autoponics. <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+""",
+    },
+    {
         "slug": "bacnet-integration-for-cea",
         "title": "BACnet Integration for CEA",
         "meta": "How BACnet connects greenhouse HVAC, climate, and CEA controls into one operational layer — without rip-and-replace. A practical guide for growers and integrators.",
@@ -88,7 +264,7 @@ ARTICLES = [
 </ul>
 
 <h2>Vertical is not dead — fragile ops stacks are</h2>
-<p>Indoor and vertical production still makes sense for the right crops, markets, and energy contexts. What failed was the assumption that hardware alone creates a business. The winners will look more like industrial plants than lifestyle brands: standardized controls, continuous monitoring, and automation that adapts as the operation scales.</p>
+<p>Indoor and vertical production still makes sense for the right crops, markets, and energy contexts. What failed was the assumption that hardware alone creates a business. The winners will look more like industrial plants than lifestyle brands: standardized controls, continuous monitoring, and automation that adapts as the operation scales. For the mid-decade picture, see <a href="/articles/vertical-farming-after-the-hype/">vertical farming after the hype</a> and <a href="/articles/vertical-farming-energy-unit-economics/">energy and unit economics</a>.</p>
 <p>Advanced Autoponics builds that stack — from on-site controllers and industrial protocols to a unified platform and Geminy in the cloud. Explore the <a href="/#platform">platform layers</a> or <a href="/#solution">our approach</a> to connecting disconnected systems.</p>
 
 <p>If you are planning a CEA build, a retrofit, or a post-mortem on an underperforming site, talk to us about turning automation into an operating system — not a collection of apps. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
@@ -241,7 +417,8 @@ ARTICLES = [
 <h2>Getting started without boiling the ocean</h2>
 <p>Start with one production block. Map the ten signals that decide whether today’s crop succeeds. Connect those sources, prove the unified view, then expand to adjacent zones. Parallel work can include BACnet climate mapping (<a href="/articles/bacnet-integration-for-cea/">BACnet integration for CEA</a>) and protocol strategy (<a href="/articles/mqtt-vs-modbus-vs-opc-ua-in-cea/">MQTT vs Modbus vs OPC UA</a>).</p>
 
-<p>If your team still builds the full picture in their heads, you do not have a visualization problem — you have a data layer problem. <a href="/#contact">Book a demo</a> with Advanced Autoponics to see how quickly a first location can share one system view. <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+<p>If your team still builds the full picture in their heads, you do not have a visualization problem — you have a data layer problem. That same gap shows up when comparing <a href="/articles/greenhouse-vs-vertical-farming-automation/">greenhouse vs vertical automation</a> strategies and when labor teams become the integration layer — see <a href="/articles/cea-labor-shortage-controls-ai/">labor scarcity and controls</a>.</p>
+<p><a href="/#contact">Book a demo</a> with Advanced Autoponics to see how quickly a first location can share one system view. <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
 """,
     },
     {
