@@ -1,0 +1,14 @@
+**/node_modules
+**/.DS_Store
+**/.git
+**/.cursor
+**/.preview
+**/.wrangler
+**/design-system
+**/scripts
+**/README.md
+**/.gitignore
+**/wrangler.jsonc
+**/package-lock.json
+**/package.json
+**/*.original.mp4

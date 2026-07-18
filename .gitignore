@@ -14,3 +14,9 @@ node_modules/
 
 # Local uncompressed video backups (keep deployable assets under 25 MiB)
 assets/*.original.mp4
+
+# wrangler
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
