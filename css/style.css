@@ -2761,3 +2761,124 @@ img {
     display: none;
   }
 }
+
+/* ---------- Article pages ---------- */
+.article-page .site-header {
+  background: rgba(248, 248, 248, 0.94);
+  backdrop-filter: blur(12px);
+}
+
+@media (max-width: 900px) {
+  .article-page .site-header {
+    background: rgba(248, 248, 248, 0.96);
+  }
+}
+
+.article {
+  padding: calc(var(--header-h) + 48px) var(--safe-r) 0 var(--safe-x);
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.article-hero {
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--grey-150);
+  margin-bottom: 40px;
+}
+
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 20px;
+  font-size: 0.85rem;
+  color: var(--grey-200);
+  letter-spacing: 0.02em;
+}
+
+.article-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.article-lede {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--grey-700);
+  max-width: 36em;
+}
+
+.article-body {
+  padding-bottom: 24px;
+}
+
+.article-body p,
+.article-body li {
+  font-weight: 300;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--brand-gray);
+  margin-bottom: 1.15em;
+}
+
+.article-body h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+  line-height: 1.15;
+  margin: 2.2em 0 0.7em;
+  color: var(--off-black);
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.4em 1.2em;
+}
+
+.article-body li {
+  margin-bottom: 0.55em;
+  padding-left: 0.2em;
+}
+
+.article-body a {
+  color: var(--off-black);
+  border-bottom: 1px solid var(--accent);
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.article-body a:hover,
+.article-body a:focus-visible {
+  color: var(--grey-700);
+  border-bottom-color: var(--grey-200);
+}
+
+.article-body strong {
+  font-weight: 500;
+  color: var(--off-black);
+}
+
+.article-related {
+  margin-top: 24px;
+}
+
+.article-back {
+  max-width: var(--max);
+  margin: 36px auto 0;
+}
+
+@media (max-width: 720px) {
+  .article {
+    padding-top: calc(var(--header-h) + 32px);
+  }
+
+  .article-body p,
+  .article-body li {
+    font-size: 1rem;
+  }
+}
