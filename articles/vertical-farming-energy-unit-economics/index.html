@@ -105,13 +105,42 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">25–40%+</p><p class="article-stats__label">Energy share of OpEx in many VF sites</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">~50–70%</p><p class="article-stats__label">Lighting share of indoor power draw</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">2×+</p><p class="article-stats__label">Horticultural LED efficacy gains vs early 2010s</p></div>
+</div>
+
 <p>Vertical farming’s hardest lesson of the mid-2020s was not botanical. It was economic. Industry coverage of 2025 described a wave of restructurings and exits among capital-intensive indoor growers, alongside a sharp pullback in late-stage venture funding from the early-decade peak. The common thread was unit economics: facilities that could not keep energy, labor, and yield inside a workable band could not outrun their fixed costs.</p>
 
-<p>Energy sits at the center of that story. Lighting and HVAC are not overhead line items you optimize once at commissioning. They are continuous production costs that move with crop stage, climate strategy, and how tightly your controls actually run.</p>
+<p>Energy sits at the center of that story. In fully lit vertical systems, electricity is often reported as roughly a quarter to more than two-fifths of operating expense — and lighting commonly accounts for about half to two-thirds of that power draw, with HVAC close behind. Those are ranges, not guarantees: tariff structure, crop, and climate strategy move the needle.</p>
+
+<figure class="article-chart" aria-labelledby="chart-energy-opex-title">
+  <figcaption class="article-chart__title" id="chart-energy-opex-title">Illustrative indoor OpEx mix</figcaption>
+  <p class="article-chart__subtitle">Energy-heavy vertical leaf production · share of OpEx</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Energy</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:72%"></span></span><span class="article-chart__bar-value">~35%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Labor</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:56%"></span></span><span class="article-chart__bar-value">~28%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Consumables</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:36%"></span></span><span class="article-chart__bar-value">~18%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Other</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:38%"></span></span><span class="article-chart__bar-value">~19%</span></li>
+  </ul>
+  <p class="article-chart__footnote">Composite of ranges commonly reported in CEA energy and labor discussions (2024–2026). Not a single-facility audit.</p>
+</figure>
 
 <h2>Why energy decides indoor margins</h2>
-<p>Indoor farms replace free sunlight with electricity. In fully lit vertical systems, lighting often dominates power draw, with humidity and temperature control close behind. When those subsystems are scheduled independently — or worse, managed by walkthroughs and sticky notes — you pay for over-lighting, over-cooling, and fighting your own dehumidification load.</p>
-<p>Field evaluations of smart CEA controls have shown that strategies such as automated daily light integral (DLI) management and variable-speed ventilation can unlock large electricity savings versus static schedules. The exact percentage depends on crop, climate zone, and baseline equipment — but the direction is clear: integrated controls are no longer optional polish. They are how you protect contribution margin.</p>
+<p>Indoor farms replace free sunlight with electricity. When lighting, humidity, and temperature control are scheduled independently — or worse, managed by walkthroughs and sticky notes — you pay for over-lighting, over-cooling, and fighting your own dehumidification load.</p>
+<p>Field evaluations of smart CEA controls have shown that strategies such as automated daily light integral (DLI) management and variable-speed ventilation can unlock large electricity savings versus static schedules — sometimes cited in the teens to thirty-plus percent depending on baseline. The exact percentage depends on crop, climate zone, and equipment — but the direction is clear: integrated controls are how you protect contribution margin.</p>
+
+<figure class="article-chart" aria-labelledby="chart-kwh-compare-title">
+  <figcaption class="article-chart__title" id="chart-kwh-compare-title">Energy intensity by production method</figcaption>
+  <p class="article-chart__subtitle">Approx. kWh per kg lettuce · published order-of-magnitude ranges</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Open field</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:4%"></span></span><span class="article-chart__bar-value">1–5</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Hi-tech GH</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:14%"></span></span><span class="article-chart__bar-value">5–40</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Vertical</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:100%"></span></span><span class="article-chart__bar-value">~150–350+</span></li>
+  </ul>
+  <p class="article-chart__footnote">Order-of-magnitude ranges echoed in CEA energy analyses and secondary summaries (e.g. ScienceDirect / trade roundups). Optimized sites can sit lower; poor controls sit higher.</p>
+</figure>
 
 <h2>Unit economics is an operations stack problem</h2>
 <p>Survivors in the post-hype market tend to share habits that look more like manufacturing than tech storytelling:</p>
@@ -123,7 +152,7 @@
 </ul>
 
 <h2>Where automation and data actually move the needle</h2>
-<p>Buying more efficient LEDs helps. So do better fixtures and HVAC design. But hardware efficiency plateaus if the control layer still runs open-loop. The next gains come from coupling lighting setpoints, VPD strategy, irrigation events, and equipment state into one operational model — then letting edge intelligence flag drift before it becomes crop loss or wasted runtime.</p>
+<p>Buying more efficient LEDs helps — horticultural fixture efficacy has roughly doubled versus early-2010s baselines in many product lines. So do better HVAC designs. But hardware efficiency plateaus if the control layer still runs open-loop. The next gains come from coupling lighting setpoints, VPD strategy, irrigation events, and equipment state into one operational model — then letting edge intelligence flag drift before it becomes crop loss or wasted runtime.</p>
 <p>That is the Advanced Autoponics lens: a <a href="/#platform">unified data layer</a> across climate, irrigation, and sensors; controller-level AI for anomaly detection; and <a href="/#geminy">Geminy IoT</a> as the multi-site command center. Protocols such as BACnet, Modbus, and MQTT are how existing mechanical and grow systems join that model without a rip-and-replace. Related: <a href="/articles/bacnet-integration-for-cea/">BACnet integration for CEA</a> and <a href="/articles/unified-data-layer-for-greenhouses/">unified data layer for greenhouses</a>.</p>
 
 <h2>A practical energy discipline checklist</h2>
@@ -140,6 +169,8 @@
 <p>Vertical farming is not over. Fragile energy ops stacks are. If your team still discovers overruns on the utility bill or after a quality complaint, you do not have an energy strategy — you have a lagging indicator.</p>
 
 <p>Talk with Advanced Autoponics about tying lighting, climate, and fertigation into one control surface. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+<p class="article-footnote">OpEx and kWh/kg figures are illustrative ranges from industry analyses and secondary coverage — always validate against your tariff, crop, and facility audit.</p>
+
       </div>
     </article>
 

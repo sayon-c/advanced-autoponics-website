@@ -33,7 +33,7 @@
   "headline": "Why Vertical Farms Are Failing \u2014 and What the Future of Farming Automation Looks Like",
   "description": "Why many vertical farms struggle with economics and operations \u2014 and how reliable automation, unified data, and controller-level AI define the next chapter of CEA.",
   "datePublished": "2025-04-13",
-  "dateModified": "2025-04-13",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,7 +105,34 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">~$2.8B → $290M</p><p class="article-stats__label">Disclosed CEA funding, 2021 peak vs 2025</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">~90%</p><p class="article-stats__label">Funding drop cited in 2025 reviews</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">14</p><p class="article-stats__label">CEA-related bankruptcies noted for 2025</p></div>
+</div>
+
 <p>Over the last decade, vertical farming attracted enormous capital and even larger headlines. Some facilities produced beautiful crops. Many still could not produce a durable business. Closures and pivots followed — and with them, a useful industry reckoning: controlled environment agriculture is not a real-estate narrative. It is an operations and automation problem.</p>
+
+<p>Industry year-in-review coverage of 2025 put hard numbers on the reset: disclosed funding on the order of roughly <strong>$290 million</strong> versus a peak near <strong>$2.8 billion in 2021</strong> — about a 90% decline — alongside roughly <strong>14 bankruptcies</strong> among indoor farming and related CEA operators. Those figures vary by methodology, but the direction is unambiguous.</p>
+
+<figure class="article-chart" aria-labelledby="chart-vf-funding-title">
+  <figcaption class="article-chart__title" id="chart-vf-funding-title">Disclosed CEA funding (illustrative)</figcaption>
+  <p class="article-chart__subtitle">Peak vs. correction year · USD</p>
+  <svg class="article-chart__svg" viewBox="0 0 360 160" role="img" aria-label="Bar chart comparing about 2.8 billion dollars in 2021 to about 290 million in 2025">
+    <line class="chart-grid" x1="48" y1="28" x2="340" y2="28"/>
+    <line class="chart-grid" x1="48" y1="68" x2="340" y2="68"/>
+    <line class="chart-grid" x1="48" y1="108" x2="340" y2="108"/>
+    <line class="chart-axis" x1="48" y1="20" x2="48" y2="128"/>
+    <line class="chart-axis" x1="48" y1="128" x2="340" y2="128"/>
+    <rect class="chart-bar" x="90" y="30" width="72" height="98"/>
+    <rect class="chart-bar chart-bar--muted" x="210" y="112" width="72" height="16"/>
+    <text class="chart-value" x="126" y="24" text-anchor="middle">~$2.8B</text>
+    <text class="chart-value" x="246" y="106" text-anchor="middle">~$290M</text>
+    <text x="126" y="148" text-anchor="middle">2021 peak</text>
+    <text x="246" y="148" text-anchor="middle">2025</text>
+  </svg>
+  <p class="article-chart__footnote">Sources summarized from 2025 industry reviews (e.g. AGEYE / trade press). Exact tallies differ by what counts as “disclosed.”</p>
+</figure>
 
 <p>Understanding why vertical farms are failing (or struggling) is the first step toward building facilities that last. The future belongs to growers who treat automation as infrastructure, not as a slide-deck feature.</p>
 
@@ -113,8 +140,26 @@
 <p>Indoor farms carry heavy fixed costs: facility build-out, HVAC, lighting, racking, and skilled labor. Those costs only make sense when utilization, yield consistency, and labor hours per kilogram stay inside a tight band. Too many projects optimized for square footage and brand imagery before they optimized for visibility into what the facility was actually doing hour by hour.</p>
 <p>When climate, irrigation, and nutrient systems do not share a common data layer, operators fill the gaps with walkthroughs and spreadsheets. That works at pilot scale. It collapses when you multiply rooms, shifts, and SKUs.</p>
 
+<figure class="article-chart" aria-labelledby="chart-vf-fail-stack-title">
+  <figcaption class="article-chart__title" id="chart-vf-fail-stack-title">Where stressed vertical ops usually break</figcaption>
+  <p class="article-chart__subtitle">Typical stress share of OpEx · illustrative ranges</p>
+  <div class="article-chart__stack">
+    <div class="article-chart__stack-bar" role="img" aria-label="Stacked bar: energy about 35 percent, labor about 30 percent, other about 35 percent">
+      <span class="article-chart__stack-seg" style="--w:35%; --seg:var(--accent)"></span>
+      <span class="article-chart__stack-seg" style="--w:30%; --seg:#9a9a9a"></span>
+      <span class="article-chart__stack-seg" style="--w:35%; --seg:#d8d8d8"></span>
+    </div>
+    <ul class="article-chart__legend">
+      <li><span class="article-chart__swatch" style="--swatch:var(--accent)"></span>Energy ~25–40%+</li>
+      <li><span class="article-chart__swatch" style="--swatch:#9a9a9a"></span>Labor ~20–35%</li>
+      <li><span class="article-chart__swatch" style="--swatch:#d8d8d8"></span>Other OpEx</li>
+    </ul>
+  </div>
+  <p class="article-chart__footnote">Ranges commonly cited across CEA operator surveys and energy analyses; facility mix varies widely.</p>
+</figure>
+
 <h2>Energy and climate are not side quests</h2>
-<p>Lighting and HVAC dominate operating expense in many vertical systems. If setpoint strategy, dehumidification, and airflow are managed separately from irrigation and crop stage, energy waste and crop stress travel together. The farms that survive treat climate and fertigation as one control problem — with protocols that connect mechanical systems to grow automation instead of isolating them in a BMS silo.</p>
+<p>Lighting and HVAC dominate operating expense in many vertical systems — often cited in the mid-twenties to forty-plus percent of OpEx when power tariffs bite. If setpoint strategy, dehumidification, and airflow are managed separately from irrigation and crop stage, energy waste and crop stress travel together. The farms that survive treat climate and fertigation as one control problem — with protocols that connect mechanical systems to grow automation instead of isolating them in a BMS silo.</p>
 
 <h2>Automation theater vs. automation that runs</h2>
 <p>Buying sensors is easy. Buying dashboards is easy. Running a facility where issues are detected before they hit yield is hard. Many vertical farms deployed partial automation: a climate controller here, a dosing skid there, a cloud app that only worked when someone remembered to check it. Without on-site intelligence and a unified model, “automation” became another place to look when something went wrong.</p>
@@ -133,6 +178,8 @@
 <p>Advanced Autoponics builds that stack — from on-site controllers and industrial protocols to a unified platform and Geminy in the cloud. Explore the <a href="/#platform">platform layers</a> or <a href="/#solution">our approach</a> to connecting disconnected systems.</p>
 
 <p>If you are planning a CEA build, a retrofit, or a post-mortem on an underperforming site, talk to us about turning automation into an operating system — not a collection of apps. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+<p class="article-footnote">Funding and bankruptcy figures referenced above are drawn from widely cited 2025 CEA industry reviews; treat them as order-of-magnitude context, not audited company financials.</p>
+
       </div>
     </article>
 

@@ -33,7 +33,7 @@
   "headline": "Full Automation Without the Burden of Custom Development",
   "description": "How CEA and greenhouse operators get full automation without years of custom software \u2014 using configurable platforms, open protocols, and brand-agnostic controls.",
   "datePublished": "2025-04-17",
-  "dateModified": "2025-04-17",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,7 +105,33 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">Weeks</p><p class="article-stats__label">Target first-site deploy vs multi-month custom</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">1 model</p><p class="article-stats__label">Configurable zones beat one-off codebases</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">N sites</p><p class="article-stats__label">Reuse mappings — don’t rebuild per facility</p></div>
+</div>
+
 <p>Every ambitious grow facility eventually hits the same fork in the road: keep stitching together vendor apps, or commission a custom control system that “finally does everything.” Custom development can work. It also creates schedule risk, knowledge concentration, and a maintenance burden that outlives the project budget.</p>
+
+<figure class="article-chart" aria-labelledby="chart-custom-cost-title">
+  <figcaption class="article-chart__title" id="chart-custom-cost-title">Total cost of ownership shape</figcaption>
+  <p class="article-chart__subtitle">Relative effort over time · schematic</p>
+  <svg class="article-chart__svg" viewBox="0 0 360 160" role="img" aria-label="Line chart comparing rising custom development cost versus flatter platform cost">
+    <line class="chart-grid" x1="40" y1="30" x2="340" y2="30"/>
+    <line class="chart-grid" x1="40" y1="70" x2="340" y2="70"/>
+    <line class="chart-grid" x1="40" y1="110" x2="340" y2="110"/>
+    <line class="chart-axis" x1="40" y1="20" x2="40" y2="130"/>
+    <line class="chart-axis" x1="40" y1="130" x2="340" y2="130"/>
+    <polyline class="chart-line" points="60,100 140,85 220,55 300,25" style="stroke:var(--grey-175)"/>
+    <polyline class="chart-line" points="60,95 140,90 220,88 300,86"/>
+    <text x="300" y="18" text-anchor="end" class="chart-value">Custom</text>
+    <text x="300" y="78" text-anchor="end" class="chart-value">Platform</text>
+    <text x="60" y="148" text-anchor="middle">Launch</text>
+    <text x="220" y="148" text-anchor="middle">Year 2</text>
+    <text x="300" y="148" text-anchor="middle">Scale</text>
+  </svg>
+  <p class="article-chart__footnote">Schematic: custom stacks often look cheap at kickoff and expensive at site two.</p>
+</figure>
 
 <p>Advanced Autoponics exists for operators who want full automation without turning into a software company. The path is platform configuration, industrial protocols, and a unified data layer — not endless tickets against a bespoke stack.</p>
 
@@ -118,6 +144,18 @@
 </ul>
 <p>Growers do not need uniqueness for its own sake. They need reliable loops: climate, irrigation, nutrients, alarms, and visibility across sites. The more of those loops you encode in one-off software, the more every expansion project inherits technical debt.</p>
 <p>Teams also underestimate integration testing. A custom dashboard that works in a staging rack can fail when a third-party controller changes register maps, when a broker certificate expires, or when a second facility uses slightly different equipment. Configurable platforms absorb those differences as mappings. Custom apps absorb them as emergencies.</p>
+
+<figure class="article-chart" aria-labelledby="chart-custom-decision-title">
+  <figcaption class="article-chart__title" id="chart-custom-decision-title">Build vs configure decision weights</figcaption>
+  <p class="article-chart__subtitle">When platform configuration usually wins</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Standard loops</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:92%"></span></span><span class="article-chart__bar-value">Configure</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Multi-site reuse</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:88%"></span></span><span class="article-chart__bar-value">Configure</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Novel R&amp;D skid</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:55%"></span></span><span class="article-chart__bar-value">Edge custom</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Full rewrite</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:18%"></span></span><span class="article-chart__bar-value">Rare</span></li>
+  </ul>
+  <p class="article-chart__footnote">Keep bespoke logic at the edges; keep the operations spine standard.</p>
+</figure>
 
 <h2>What “full automation” should mean</h2>
 <p>Full automation is not a black box that removes humans. It is a system that:</p>
@@ -141,12 +179,12 @@
 <ul>
   <li>Can this requirement be met by mapping points into an existing data model?</li>
   <li>Will a second site inherit this work, or will we rebuild?</li>
-  <li>Who supports this at 2 a.m. when a valve sticks?</li>
-  <li>What is the exit path if the vendor or developer disappears?</li>
+  <li>Who owns the code when the original developer is unavailable for a weekend emergency?</li>
+  <li>Does the schedule assume “software will catch up” after plants are already in the room?</li>
 </ul>
-<p>If those answers are uncomfortable, choose configurable automation first.</p>
 
-<p>Advanced Autoponics delivers industrial-grade controls, I/O monitoring, and cloud command without forcing a custom development program. Explore <a href="/#delivery">what we deliver</a> or <a href="/#contact">book a demo</a> to see how quickly a first location can go live. Call <a href="tel:+16083200213">(608) 320-0213</a> or email <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+<p>If the honest answers push you toward a configurable, protocol-friendly platform, talk to Advanced Autoponics about deploying full automation without the custom-development tax. <a href="/#contact">Book a demo</a> · <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+
       </div>
     </article>
 

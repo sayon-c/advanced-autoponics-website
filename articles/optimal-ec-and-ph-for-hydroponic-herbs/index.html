@@ -33,7 +33,7 @@
   "headline": "Optimal EC and pH for Hydroponic Herb Growth",
   "description": "Practical EC and pH targets for hydroponic herbs, why drift happens, and how continuous monitoring plus automation keeps basil, mint, and leafy herbs on spec.",
   "datePublished": "2025-05-04",
-  "dateModified": "2025-05-04",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,13 +105,52 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">1.0–1.6</p><p class="article-stats__label">Basil EC starting band · mS/cm</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">5.5–6.5</p><p class="article-stats__label">Common herb pH operating window</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">Minutes</p><p class="article-stats__label">Drift detection vs daily clipboards</p></div>
+</div>
+
 <p>Hydroponic herbs look simple until the first crop that tastes flat, yellows early, or stalls after a nutrient change. In recirculating and NFT systems, electrical conductivity (EC) and pH are the two numbers that most often explain those outcomes. They are also the two numbers most often checked too late.</p>
 
 <p>This guide covers practical target ranges for common culinary herbs, why values drift, and how automation turns spot checks into continuous control — the same philosophy behind Advanced Autoponics’ data-first approach to CEA.</p>
 
+<figure class="article-chart" aria-labelledby="chart-herb-ec-title">
+  <figcaption class="article-chart__title" id="chart-herb-ec-title">Starting EC bands by herb</figcaption>
+  <p class="article-chart__subtitle">mS/cm · recirculating systems · validate locally</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Basil</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:72%"></span></span><span class="article-chart__bar-value">1.0–1.6</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Mint</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:80%"></span></span><span class="article-chart__bar-value">1.0–1.8</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Cilantro</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:64%"></span></span><span class="article-chart__bar-value">0.8–1.6</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Chives</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:78%"></span></span><span class="article-chart__bar-value">1.2–1.8</span></li>
+  </ul>
+  <p class="article-chart__footnote">Operational starting points used widely in herb hydroponics guides — cultivar, water chemistry, and system type still win.</p>
+</figure>
+
 <h2>What EC and pH actually control</h2>
 <p><strong>EC</strong> estimates the total dissolved salts in solution — a proxy for nutrient strength. Too low and growth slows; too high and plants struggle with osmotic stress, tip burn, or bitter flavor. <strong>pH</strong> governs nutrient availability. Even a “perfect” recipe fails if pH locks out iron, manganese, or phosphorus.</p>
 <p>For herbs, the goal is not chasing a single magic number. It is keeping the root zone inside a band that matches crop stage, water source, and system type — and knowing within minutes when you leave that band.</p>
+
+<figure class="article-chart" aria-labelledby="chart-herb-ph-title">
+  <figcaption class="article-chart__title" id="chart-herb-ph-title">pH windows for culinary herbs</figcaption>
+  <p class="article-chart__subtitle">Typical target bands · schematic</p>
+  <svg class="article-chart__svg" viewBox="0 0 360 140" role="img" aria-label="Comparison bars showing pH ranges for basil mint cilantro and chives">
+    <line class="chart-axis" x1="70" y1="20" x2="70" y2="120"/>
+    <line class="chart-axis" x1="70" y1="120" x2="340" y2="120"/>
+    <text x="70" y="136" text-anchor="middle">5.0</text>
+    <text x="205" y="136" text-anchor="middle">6.0</text>
+    <text x="340" y="136" text-anchor="middle">7.0</text>
+    <rect class="chart-bar" x="138" y="28" width="95" height="14"/>
+    <rect class="chart-bar" x="138" y="52" width="135" height="14"/>
+    <rect class="chart-bar" x="178" y="76" width="95" height="14"/>
+    <rect class="chart-bar" x="205" y="100" width="68" height="14"/>
+    <text x="8" y="39">Basil</text>
+    <text x="8" y="63">Mint</text>
+    <text x="8" y="87">Cilantro</text>
+    <text x="8" y="111">Chives</text>
+  </svg>
+  <p class="article-chart__footnote">Bands approximate 5.5–6.2 (basil), 5.5–6.5 (mint), 5.8–6.5 (cilantro/parsley), 6.0–6.5 (chives).</p>
+</figure>
 
 <h2>Starting ranges for common hydroponic herbs</h2>
 <p>Always validate against your cultivar, media, and water chemistry. These ranges are useful operational starting points for many leafy culinary herbs in recirculating systems:</p>
@@ -141,11 +180,11 @@
   <li>Calibrate pH and EC probes on a fixed schedule; replace aging sensors before they lie politely.</li>
   <li>Log reservoir volume changes alongside EC — concentration effects are easy to misread.</li>
   <li>Change targets by crop stage, not by gut feel after a bad harvest.</li>
-  <li>Correlate nutrient alarms with climate events; heat waves often explain EC climbs.</li>
-  <li>Keep a fallback SOP when automation pauses — but do not let the SOP become the whole system.</li>
+  <li>Treat nutrient, climate, and irrigation as one recipe — herbs taste the interaction, not the spreadsheet row.</li>
 </ol>
 
-<p>Herbs reward consistency more than heroics. If your team still discovers pH problems with a leaf, it is time to connect fertigation into a real control surface. <a href="/#contact">Talk with Advanced Autoponics</a> about monitoring and automation that keeps EC and pH where your recipes need them — <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+<p>Stable EC and pH are the difference between consistent herb SKUs and weekly excuses. If your team still finds out about drift from the leaves instead of the trend, talk to Advanced Autoponics. <a href="/#contact">Book a demo</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+
       </div>
     </article>
 

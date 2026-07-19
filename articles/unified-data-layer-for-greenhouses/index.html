@@ -33,7 +33,7 @@
   "headline": "Unified Data Layer for Greenhouses",
   "description": "Why greenhouse operations need a unified data layer \u2014 how to normalize climate, irrigation, and sensor feeds into one model for visibility, AI, and control.",
   "datePublished": "2026-05-12",
-  "dateModified": "2026-05-12",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,13 +105,49 @@
       </header>
 
       <div class="article-body reveal">
-<p>Walk into a typical commercial greenhouse and you will find competence everywhere — and still struggle to answer a simple question: what is actually happening across the facility right now? Climate may live in a BMS. Irrigation may live on a panel HMI. Sensors may stream to a vendor cloud. Alerts may arrive as texts that nobody trusts.</p>
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">1 schema</p><p class="article-stats__label">Zones, assets, alerts — not vendor names</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">3–5+</p><p class="article-stats__label">Apps growers often juggle without unification</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">Edge-safe</p><p class="article-stats__label">Local control when the WAN drops</p></div>
+</div>
+
+<p>Walk into a typical commercial greenhouse and you will find competence everywhere — and still struggle to answer a simple question: what is actually happening across the facility right now? Climate may live in a BMS. Irrigation may live on a panel HMI. Sensors may stream to a vendor cloud. Alerts may arrive as texts that nobody trusts. Industry walkthroughs regularly describe teams checking <strong>three to five</strong> interfaces before they trust a decision.</p>
+
+<figure class="article-chart" aria-labelledby="chart-udl-apps-title">
+  <figcaption class="article-chart__title" id="chart-udl-apps-title">Fragmented vs unified visibility</figcaption>
+  <p class="article-chart__subtitle">Interfaces touched for a single zone check</p>
+  <div class="article-chart__compare">
+    <div class="article-chart__compare-col">
+      <p class="article-chart__compare-head">Fragmented site</p>
+      <p class="article-chart__compare-metric">4–6 apps</p>
+      <p class="article-chart__compare-note">BMS + fertigation HMI + sensor cloud + SMS + spreadsheet.</p>
+    </div>
+    <div class="article-chart__compare-col">
+      <p class="article-chart__compare-head">Unified layer</p>
+      <p class="article-chart__compare-metric">1 model</p>
+      <p class="article-chart__compare-note">Same zones and alerts on site and in Geminy.</p>
+    </div>
+  </div>
+  <p class="article-chart__footnote">Counts are illustrative of common multi-vendor greenhouse stacks.</p>
+</figure>
 
 <p>A unified data layer is the missing middle. It normalizes those feeds into one operational schema so people, automation, and AI can work from the same truth.</p>
 
 <h2>What a unified data layer is (and is not)</h2>
 <p>It is not “another dashboard.” Dashboards are views. The data layer is the model underneath: zones, assets, points, units, quality flags, and time series that mean the same thing whether the source was Modbus, BACnet, MQTT, or a REST API.</p>
 <p>It is also not a data lake for someday analytics. Greenhouse operators need low-latency, decision-grade signals — with enough history to diagnose drift, not a warehouse that only data scientists can query.</p>
+
+<figure class="article-chart" aria-labelledby="chart-udl-pipeline-title">
+  <figcaption class="article-chart__title" id="chart-udl-pipeline-title">Collect → model → act</figcaption>
+  <p class="article-chart__subtitle">Throughput of useful decisions · schematic</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Raw points</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:100%"></span></span><span class="article-chart__bar-value">High volume</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Normalized</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:60%"></span></span><span class="article-chart__bar-value">Trusted</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Prioritized</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:28%"></span></span><span class="article-chart__bar-value">Actionable</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Governed writes</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:12%"></span></span><span class="article-chart__bar-value">Few, safe</span></li>
+  </ul>
+  <p class="article-chart__footnote">Good layers shrink noise into a small set of decisions — they do not maximize chart widgets.</p>
+</figure>
 
 <h2>Why greenhouses feel fragmented</h2>
 <ul>
@@ -140,6 +176,7 @@
 
 <p>If your team still builds the full picture in their heads, you do not have a visualization problem — you have a data layer problem. That same gap shows up when comparing <a href="/articles/greenhouse-vs-vertical-farming-automation/">greenhouse vs vertical automation</a> strategies and when labor teams become the integration layer — see <a href="/articles/cea-labor-shortage-controls-ai/">labor scarcity and controls</a>.</p>
 <p><a href="/#contact">Book a demo</a> with Advanced Autoponics to see how quickly a first location can share one system view. <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+
       </div>
     </article>
 

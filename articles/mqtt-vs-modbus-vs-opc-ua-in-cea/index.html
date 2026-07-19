@@ -33,7 +33,7 @@
   "headline": "MQTT vs Modbus vs OPC UA in CEA",
   "description": "Compare MQTT, Modbus, and OPC UA for controlled environment agriculture \u2014 when to use each protocol and how a unified CEA platform speaks all three.",
   "datePublished": "2026-05-28",
-  "dateModified": "2026-05-28",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,7 +105,25 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">Modbus</p><p class="article-stats__label">Skids, VFDs, meters — floor workhorse</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">MQTT</p><p class="article-stats__label">Multi-site telemetry &amp; events</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">OPC UA</p><p class="article-stats__label">Structured enterprise / MES path</p></div>
+</div>
+
 <p>Ask three integrators how a greenhouse should talk to the cloud and you may hear three answers: MQTT for IoT, Modbus because the skid already speaks it, or OPC UA because the enterprise architect asked for it. All three can be correct. None of them should become a religious war.</p>
+
+<figure class="article-chart" aria-labelledby="chart-proto-fit-title">
+  <figcaption class="article-chart__title" id="chart-proto-fit-title">Protocol fit by job</figcaption>
+  <p class="article-chart__subtitle">Relative suitability · schematic score</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Machine I/O</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:95%"></span></span><span class="article-chart__bar-value">Modbus</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Sensor fan-in</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:92%"></span></span><span class="article-chart__bar-value">MQTT</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Enterprise model</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:88%"></span></span><span class="article-chart__bar-value">OPC UA</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Legacy HVAC</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:70%"></span></span><span class="article-chart__bar-value">BACnet*</span></li>
+  </ul>
+  <p class="article-chart__footnote">*BACnet often coexists — see the dedicated BACnet article. Scores are qualitative integrator guidance, not benchmarks.</p>
+</figure>
 
 <p>This comparison helps CEA and greenhouse teams choose protocols by job — and explains why Advanced Autoponics treats multi-protocol ingestion as table stakes for a <a href="/articles/unified-data-layer-for-greenhouses/">unified data layer</a>.</p>
 
@@ -117,10 +135,30 @@
 <p>MQTT shines for publish/subscribe telemetry — sensors, gateways, and edge agents that send frequent small messages. It is lightweight, firewall-friendly with the right broker design, and natural for multi-site fan-in to a cloud command center. It is not, by itself, a PLC programming model. Retained messages and topic design matter; so does authentication.</p>
 <p><strong>Use MQTT when:</strong> you need scalable telemetry, mobile/cloud visibility, and event-driven alerts across facilities — especially alongside on-site controllers that still handle hard real-time I/O.</p>
 
+<figure class="article-chart" aria-labelledby="chart-proto-stack-title">
+  <figcaption class="article-chart__title" id="chart-proto-stack-title">Polyglot edge, one model</figcaption>
+  <p class="article-chart__subtitle">Where each protocol typically lives</p>
+  <div class="article-chart__stack">
+    <div class="article-chart__stack-bar" role="img" aria-label="Stacked architecture layers for protocols">
+      <span class="article-chart__stack-seg" style="--w:35%; --seg:#9a9a9a"></span>
+      <span class="article-chart__stack-seg" style="--w:30%; --seg:var(--accent)"></span>
+      <span class="article-chart__stack-seg" style="--w:20%; --seg:#b8b8b8"></span>
+      <span class="article-chart__stack-seg" style="--w:15%; --seg:#d8d8d8"></span>
+    </div>
+    <ul class="article-chart__legend">
+      <li><span class="article-chart__swatch" style="--swatch:#9a9a9a"></span>Field Modbus</li>
+      <li><span class="article-chart__swatch" style="--swatch:var(--accent)"></span>MQTT telemetry</li>
+      <li><span class="article-chart__swatch" style="--swatch:#b8b8b8"></span>OPC UA edge</li>
+      <li><span class="article-chart__swatch" style="--swatch:#d8d8d8"></span>BACnet HVAC</li>
+    </ul>
+  </div>
+  <p class="article-chart__footnote">Fighting for a single protocol usually costs more than normalizing mixed feeds.</p>
+</figure>
+
 <h2>OPC UA: structured, standards-heavy interoperability</h2>
 <p>OPC UA offers rich information modeling, stronger security features, and a path many industrial enterprises prefer for MES/SCADA alignment. It can be heavier to implement and is not always available on horticultural devices. When present — often via gateways or modern PLCs — it is excellent for structured browseable data and controlled enterprise integration.</p>
 <p><strong>Use OPC UA when:</strong> corporate standards require it, or when you need a more expressive model than Modbus registers for plant-wide systems.</p>
-<p>In practice, many CEA sites end up with all three. A dosing skid speaks Modbus TCP. Wireless substrate probes publish over MQTT. A corporate OT standard asks for OPC UA on the plant network edge. Fighting for a single protocol usually costs more than normalizing mixed feeds.</p>
+<p>In practice, many CEA sites end up with all three. A dosing skid speaks Modbus TCP. Wireless substrate probes publish over MQTT. A corporate OT standard asks for OPC UA on the plant network edge.</p>
 
 <h2>Side-by-side for CEA decisions</h2>
 <ul>
@@ -142,6 +180,7 @@
 </ol>
 
 <p>Pick protocols for the job, then demand a platform that can host all of them. <a href="/#contact">Book a demo</a> to see multi-protocol CEA automation in practice — <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+
       </div>
     </article>
 

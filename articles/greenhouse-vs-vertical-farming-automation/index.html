@@ -33,7 +33,7 @@
   "headline": "Greenhouse CEA vs Indoor Vertical: Where Automation Wins",
   "description": "Compare greenhouse CEA and indoor vertical farming on cost structure, climate risk, and automation \u2014 and where a unified controls stack creates the most leverage.",
   "datePublished": "2026-07-16",
-  "dateModified": "2026-07-16",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,13 +105,49 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">~5–40</p><p class="article-stats__label">kWh/kg lettuce · hi-tech greenhouse range</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">~150–350+</p><p class="article-stats__label">kWh/kg lettuce · many vertical systems</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">GH ≫ VF</p><p class="article-stats__label">Commercial site counts in CEA censuses</p></div>
+</div>
+
 <p>Global CEA census reporting continues to show a familiar imbalance: greenhouses significantly outnumber vertical farms among commercial operators, with generally lower construction intensity and more established paths to profitability. That does not make vertical obsolete. It means operators should choose architecture for unit economics — then invest automation where the model is structurally weak.</p>
+
+<figure class="article-chart" aria-labelledby="chart-gh-vf-energy-title">
+  <figcaption class="article-chart__title" id="chart-gh-vf-energy-title">Energy intensity: glass vs racks</figcaption>
+  <p class="article-chart__subtitle">Approx. kWh per kg lettuce · order-of-magnitude</p>
+  <div class="article-chart__compare">
+    <div class="article-chart__compare-col">
+      <p class="article-chart__compare-head">High-tech greenhouse</p>
+      <p class="article-chart__compare-metric">5–40 kWh/kg</p>
+      <p class="article-chart__compare-note">Sunlight carries most photons; LEDs and climate still matter.</p>
+    </div>
+    <div class="article-chart__compare-col">
+      <p class="article-chart__compare-head">Indoor vertical</p>
+      <p class="article-chart__compare-metric">150–350+ kWh/kg</p>
+      <p class="article-chart__compare-note">Every photon is purchased — controls decide if you waste them.</p>
+    </div>
+  </div>
+  <p class="article-chart__footnote">Ranges echoed in CEA energy analyses and secondary summaries; optimized VF can improve, but the structural gap remains large.</p>
+</figure>
 
 <p>Advanced Autoponics works across both glass and indoor rooms. The control problem looks different in each — but the failure mode is often identical: climate, irrigation, sensors, and alerts never share one operational truth.</p>
 
 <h2>What greenhouses still do better</h2>
-<p>Sunlight is a free (if variable) light source. Greenhouses convert that into lower lighting OpEx and, in many markets, more familiar construction and labor patterns. Hybrid approaches — supplemental LED, screens, and precise fertigation — let growers chase consistency without paying for every photon. Energy and labor remain top cost pressures, but the baseline is often more forgiving than a fully lit rack facility.</p>
+<p>Sunlight is a free (if variable) light source. Greenhouses convert that into lower lighting OpEx and, in many markets, more familiar construction and labor patterns. Hybrid approaches — supplemental LED, screens, and precise fertigation — let growers chase consistency without paying for every photon. Energy and labor remain top cost pressures in operator surveys through 2025, but the baseline is often more forgiving than a fully lit rack facility.</p>
 <p>The automation win in greenhouses is usually integration: BACnet-heavy HVAC and screens, Modbus dosing skids, MQTT sensor networks, and a grow team that needs one view. See <a href="/articles/bacnet-integration-for-cea/">BACnet integration for CEA</a>.</p>
+
+<figure class="article-chart" aria-labelledby="chart-gh-vf-capex-title">
+  <figcaption class="article-chart__title" id="chart-gh-vf-capex-title">Where automation leverage lands</figcaption>
+  <p class="article-chart__subtitle">Relative priority by model · schematic</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">GH · climate integ.</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:90%"></span></span><span class="article-chart__bar-value">Critical</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">GH · fertigation</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:78%"></span></span><span class="article-chart__bar-value">High</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">VF · energy loops</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:96%"></span></span><span class="article-chart__bar-value">Critical</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">VF · labor density</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:85%"></span></span><span class="article-chart__bar-value">High</span></li>
+  </ul>
+  <p class="article-chart__footnote">Schematic priorities for operators choosing where to invest controls first.</p>
+</figure>
 
 <h2>Where vertical still earns its keep</h2>
 <p>Indoor vertical systems excel when you need extreme locality, tight food-safety narratives, high-value formats, or production that cannot depend on outdoor climate. They struggle when they compete head-to-head with field or greenhouse commodity greens on price alone — especially in high-tariff metros. After 2025’s consolidation wave, the credible vertical stories tend to emphasize focused crop portfolios, secured retail channels, and modular capacity tied to proven demand rather than speculative megafacilities.</p>
@@ -139,6 +175,7 @@
 <p>If the answers favor sunlight and acreage, build greenhouse-first and automate integration. If they favor density and locality with a crop that can carry the energy bill, vertical can work — with manufacturing-grade controls from day one.</p>
 
 <p>Advanced Autoponics builds brand-agnostic automation for both paths: on-site controllers, a <a href="/#platform">unified data layer</a>, and Geminy in the cloud so every site shares live views and commands. <a href="/#contact">Book a demo</a> · <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+
       </div>
     </article>
 

@@ -33,7 +33,7 @@
   "headline": "Predictive AI for Grow-Room Anomaly Detection",
   "description": "How predictive AI and controller-level anomaly detection help CEA grow rooms catch irrigation, climate, and nutrient drift before yield takes the hit.",
   "datePublished": "2026-06-18",
-  "dateModified": "2026-06-18",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,12 +105,52 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">Hours earlier</p><p class="article-stats__label">Drift vs hard threshold trips</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">2–4 wks</p><p class="article-stats__label">Typical shadow-mode trust period</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">Edge + cloud</p><p class="article-stats__label">Local action when WAN is imperfect</p></div>
+</div>
+
 <p>Most grow rooms already have alarms. Temperature high. Humidity high. Tank level low. Those alarms are necessary and still insufficient. Crops are lost in the gray zone where every individual reading looks “fine” but the combination is wrong — a slow EC climb, a VPD drift overnight, a pump duty cycle that no longer matches irrigation demand.</p>
+
+<figure class="article-chart" aria-labelledby="chart-ai-detect-title">
+  <figcaption class="article-chart__title" id="chart-ai-detect-title">When problems become visible</figcaption>
+  <p class="article-chart__subtitle">Illustrative timeline · hours before yield impact</p>
+  <svg class="article-chart__svg" viewBox="0 0 360 160" role="img" aria-label="Line chart comparing earlier anomaly detection versus later threshold alarms">
+    <line class="chart-grid" x1="40" y1="30" x2="340" y2="30"/>
+    <line class="chart-grid" x1="40" y1="70" x2="340" y2="70"/>
+    <line class="chart-grid" x1="40" y1="110" x2="340" y2="110"/>
+    <line class="chart-axis" x1="40" y1="20" x2="40" y2="130"/>
+    <line class="chart-axis" x1="40" y1="130" x2="340" y2="130"/>
+    <polyline class="chart-line" points="50,115 120,100 180,70 240,40 320,22"/>
+    <polyline class="chart-line" points="50,118 160,112 250,90 320,55" style="stroke:var(--grey-175)"/>
+    <circle class="chart-dot" cx="180" cy="70" r="3.5"/>
+    <circle class="chart-dot" cx="280" cy="72" r="3.5" style="stroke:var(--grey-175)"/>
+    <text class="chart-value" x="180" y="60" text-anchor="middle">Anomaly</text>
+    <text x="280" y="62" text-anchor="middle">Threshold</text>
+    <text x="50" y="148" text-anchor="middle">T0</text>
+    <text x="200" y="148" text-anchor="middle">Drift</text>
+    <text x="320" y="148" text-anchor="middle">Impact</text>
+  </svg>
+  <p class="article-chart__footnote">Schematic: pattern breaks often precede hard limit trips by hours — sometimes a full shift.</p>
+</figure>
 
 <p>Predictive AI for grow-room anomaly detection is about recognizing those pattern breaks early, at the controller and in the cloud, so teams respond before yield, labor, or uptime take the hit.</p>
 
 <h2>Thresholds vs. anomalies</h2>
 <p>A threshold says: alert if pH &lt; 5.4. An anomaly model says: this zone’s pH/EC/temperature relationship no longer matches its recent healthy behavior, even if each value is still inside absolute limits. Both belong in a serious facility. Thresholds catch hard faults. Anomaly detection catches silent drift.</p>
+
+<figure class="article-chart" aria-labelledby="chart-ai-signals-title">
+  <figcaption class="article-chart__title" id="chart-ai-signals-title">Signals that repay close attention</figcaption>
+  <p class="article-chart__subtitle">Relative early-warning value · schematic</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Irrig. vs EC</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:92%"></span></span><span class="article-chart__bar-value">High</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">VPD pairs</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:88%"></span></span><span class="article-chart__bar-value">High</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Dose frequency</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:75%"></span></span><span class="article-chart__bar-value">Med-high</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Motor current</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:70%"></span></span><span class="article-chart__bar-value">Med-high</span></li>
+  </ul>
+  <p class="article-chart__footnote">Value collapses if naming and units are inconsistent across zones.</p>
+</figure>
 
 <h2>Where controller-level AI matters</h2>
 <p>Cloud-only analytics arrive too late when a valve sticks at 1 a.m. Controller-level AI watches signals on site, flags drift in irrigation, VPD, and nutrient curves, and keeps acting when WAN links are imperfect. Cloud systems then aggregate multi-site insight, summaries, and supervisory control. Advanced Autoponics builds for that split: edge intelligence plus <a href="/#geminy">Geminy IoT</a> as the command center.</p>
@@ -134,7 +174,7 @@
   <li>Confidence that false alarms will be tuned down over time</li>
 </ol>
 <p>That is the “predictive visibility” layer in our <a href="/#platform">platform</a>: forecasts and LLM-generated summaries of what matters now — not a wall of sensor logs.</p>
-<p>Good anomaly workflows also preserve context. An alert that only says “Zone 3 unusual” wastes time. An alert that says irrigation runtime rose while return EC flattened — and points operators at the manifold and recipe history — shortens the path from notice to action. That context only exists when climate, fertigation, and equipment signals share one model.</p>
+<p>Good anomaly workflows also preserve context. An alert that only says “Zone 3 unusual” wastes time. An alert that says irrigation runtime rose while return EC flattened — and points operators at the manifold and recipe history — shortens the path from notice to action.</p>
 
 <h2>Avoiding AI theater</h2>
 <p>If a vendor cannot explain which signals feed the model, how the system behaves offline, or how you correct bad alerts, you are buying a demo. Demand integration with your real protocols — Modbus, MQTT, BACnet, OPC UA — and a path that does not require a custom data science team. Related: <a href="/articles/full-automation-without-custom-development/">full automation without custom development</a> and <a href="/articles/mqtt-vs-modbus-vs-opc-ua-in-cea/">protocol choices in CEA</a>.</p>
@@ -143,6 +183,7 @@
 <p>Start in shadow mode: detect and notify without auto-changing setpoints. Compare alerts to operator findings for two to four weeks. Then enable guided responses on well-understood loops. Keep humans in charge of crop-critical writes until the facility trusts the system.</p>
 
 <p>Advanced Autoponics ships anomaly detection as part of a connected stack — controllers, unified data, and Geminy — so predictive insight shows up where work happens. <a href="/#contact">Book a demo</a> to see how early warnings look on a live-style zone view. <a href="tel:+16083200213">(608) 320-0213</a> · <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a>.</p>
+
       </div>
     </article>
 

@@ -33,7 +33,7 @@
   "headline": "BACnet Integration for CEA",
   "description": "How BACnet connects greenhouse HVAC, climate, and CEA controls into one operational layer \u2014 without rip-and-replace. A practical guide for growers and integrators.",
   "datePublished": "2026-07-10",
-  "dateModified": "2026-07-10",
+  "dateModified": "2026-07-18",
   "author": {
     "@type": "Organization",
     "name": "Advanced Autoponics",
@@ -105,13 +105,50 @@
       </header>
 
       <div class="article-body reveal">
+<div class="article-stats" role="group" aria-label="Key figures">
+  <div class="article-stats__item"><p class="article-stats__value">#1 HVAC</p><p class="article-stats__label">BACnet’s usual role in commercial CEA</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">Curated</p><p class="article-stats__label">Zone tags beat 4,000 raw objects</p></div>
+  <div class="article-stats__item"><p class="article-stats__value">IP &gt; MS/TP</p><p class="article-stats__label">Preferred path on most new builds</p></div>
+</div>
+
 <p>Controlled environment agriculture sits on top of building systems that were never designed for crop production. Chillers, AHUs, CO<sub>2</sub> dosing, shade screens, and zone dampers often speak BACnet because that is what the mechanical contractor installed. Grow teams then bolt on irrigation controllers, nutrient dosing skids, and sensor networks that speak something else entirely. The result is familiar: climate lives in one interface, fertigation in another, and nobody trusts either when a crop starts to drift.</p>
+
+<figure class="article-chart" aria-labelledby="chart-bacnet-mix-title">
+  <figcaption class="article-chart__title" id="chart-bacnet-mix-title">Typical protocol mix on a glass-house site</figcaption>
+  <p class="article-chart__subtitle">Share of points by subsystem · illustrative</p>
+  <ul class="article-chart__bars">
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">BACnet climate</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:45%"></span></span><span class="article-chart__bar-value">~45%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Modbus skids</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:30%"></span></span><span class="article-chart__bar-value">~30%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">MQTT sensors</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill" style="--bar:18%"></span></span><span class="article-chart__bar-value">~18%</span></li>
+    <li class="article-chart__bar-row"><span class="article-chart__bar-label">Other / REST</span><span class="article-chart__bar-track"><span class="article-chart__bar-fill article-chart__bar-fill--muted" style="--bar:7%"></span></span><span class="article-chart__bar-value">~7%</span></li>
+  </ul>
+  <p class="article-chart__footnote">Composite of common greenhouse integrations — individual sites vary by contractor and vintage.</p>
+</figure>
 
 <p>BACnet integration for CEA is about closing that gap. Done well, it turns existing HVAC and climate assets into first-class data sources for a unified operations layer — without forcing a rip-and-replace of equipment that still has years of life left.</p>
 
 <h2>Why BACnet shows up in greenhouses</h2>
 <p>BACnet (Building Automation and Control Network) became the default language for commercial HVAC because it is vendor-neutral, widely supported, and well understood by controls contractors. Many greenhouse projects inherit that stack: the same engineers who automate office buildings also automate mechanical rooms for indoor farms and glass houses.</p>
 <p>That creates an opportunity. Temperature setpoints, supply air status, economizer positions, and fault flags are already on the wire. If your CEA platform can read and write those points safely, you stop treating climate as a black box and start treating it as a controllable subsystem in the same view as irrigation and nutrients.</p>
+
+<figure class="article-chart" aria-labelledby="chart-bacnet-rollout-title">
+  <figcaption class="article-chart__title" id="chart-bacnet-rollout-title">Safer write authority over time</figcaption>
+  <p class="article-chart__subtitle">Integration maturity · schematic</p>
+  <svg class="article-chart__svg" viewBox="0 0 360 150" role="img" aria-label="Line chart showing write authority increasing from read-only to governed writes">
+    <line class="chart-grid" x1="40" y1="30" x2="340" y2="30"/>
+    <line class="chart-grid" x1="40" y1="70" x2="340" y2="70"/>
+    <line class="chart-grid" x1="40" y1="110" x2="340" y2="110"/>
+    <line class="chart-axis" x1="40" y1="20" x2="40" y2="120"/>
+    <line class="chart-axis" x1="40" y1="120" x2="340" y2="120"/>
+    <polyline class="chart-line" points="70,110 150,95 230,60 310,35"/>
+    <circle class="chart-dot" cx="70" cy="110" r="3.5"/>
+    <circle class="chart-dot" cx="310" cy="35" r="3.5"/>
+    <text x="70" y="140" text-anchor="middle">Read-only</text>
+    <text x="230" y="140" text-anchor="middle">Alarms</text>
+    <text x="310" y="140" text-anchor="middle">Writes</text>
+  </svg>
+  <p class="article-chart__footnote">Best practice: earn trust with visibility before expanding setpoint write rights.</p>
+</figure>
 
 <h2>What “good” BACnet integration looks like</h2>
 <p>Integration is not a dump of every object on the network into a dashboard. Operators do not need 4,000 raw points. They need a curated model of the rooms and zones that matter for crop decisions.</p>
@@ -141,6 +178,7 @@
 <p>If you are evaluating BACnet for a new build or a retrofit, the question is not whether the protocol works — it already does. The question is whether your team can see climate, irrigation, and alerts in one place before the crop pays for delayed awareness. That is the integration problem Advanced Autoponics solves.</p>
 
 <p>Related reading: <a href="/articles/unified-data-layer-for-greenhouses/">Unified data layer for greenhouses</a> and <a href="/articles/mqtt-vs-modbus-vs-opc-ua-in-cea/">MQTT vs Modbus vs OPC UA in CEA</a>. Ready to map your BACnet points into a live operations view? <a href="/#contact">Book a demo</a> or call <a href="tel:+16083200213">(608) 320-0213</a>.</p>
+
       </div>
     </article>
 
