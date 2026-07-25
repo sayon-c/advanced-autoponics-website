@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client invoices | Advanced Autoponics</title>
+<meta name="description" content="Secure client invoice portal for Advanced Autoponics, LLC.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://www.advancedautoponics.com/invoices">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="icon" href="/assets/favicon.png?v=2" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2" sizes="180x180">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css">
+<style>
+  .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .ico {
+    display: inline-block;
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    color: var(--accent);
+    vertical-align: -0.2em;
+  }
+  .ico-sm { width: 0.95rem; height: 0.95rem; }
+  .ico-md { width: 1.35rem; height: 1.35rem; }
+  .ico-lg { width: 1.75rem; height: 1.75rem; }
+  .ico use { pointer-events: none; }
+  .ico-mute { color: var(--mute); }
+  .ico-soft { color: var(--ink-soft); }
+
+  .inv-shell {
+    min-height: calc(100vh - 180px);
+    background:
+      radial-gradient(ellipse at 14% 0%, rgba(110, 193, 119, 0.14) 0%, transparent 44%),
+      radial-gradient(ellipse at 88% 18%, rgba(10, 31, 61, 0.06) 0%, transparent 40%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+  .inv-panel {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(28px, 5vw, 56px) clamp(18px, 4vw, 48px) 72px;
+  }
+  .inv-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 12px;
+  }
+  .inv-brand {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: clamp(2.1rem, 4.5vw, 3rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 10px;
+    line-height: 1.1;
+  }
+  .inv-lead {
+    color: var(--ink-soft);
+    max-width: 42ch;
+    margin: 0 0 28px;
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+  .inv-gate {
+    max-width: 440px;
+    padding: 28px 26px;
+    background: #fff;
+    border: 1px solid var(--line-light);
+    box-shadow: 0 18px 40px rgba(10, 31, 61, 0.06);
+    animation: inv-in 0.45s ease both;
+  }
+  .inv-gate-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .inv-gate-head .mark {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    background: rgba(110, 193, 119, 0.1);
+    color: var(--accent);
+  }
+  .inv-gate-head h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+  .inv-gate-head p {
+    margin: 2px 0 0;
+    font-size: 0.88rem;
+    color: var(--mute);
+  }
+  .inv-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 8px;
+  }
+  .inv-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px 16px;
+    border: 1px solid var(--line-light);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    outline: none;
+  }
+  .inv-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(110, 193, 119, 0.15);
+    background: #fff;
+  }
+  .inv-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .inv-shell .btn {
+    border-color: rgba(10, 31, 61, 0.14);
+    gap: 8px;
+  }
+  .inv-shell .btn.ghost {
+    color: var(--ink);
+    background: #fff;
+    border-color: rgba(10, 31, 61, 0.18);
+  }
+  .inv-shell .btn.ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  /* css/admin.css sets .btn.ghost to paper (near-white) for dark heroes — keep portal readable */
+  .inv-shell .inv-table .btn.ghost,
+  .inv-shell .inv-toolbar .btn.ghost,
+  .inv-shell .inv-detail .btn.ghost,
+  .inv-shell .inv-row-actions .btn.ghost {
+    color: var(--ink);
+  }
+  .inv-shell .btn.primary .ico { color: #fff; }
+  .inv-msg {
+    margin-top: 14px;
+    min-height: 1.2em;
+    font-size: 0.9rem;
+    color: #b42318;
+    line-height: 1.45;
+  }
+  .inv-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    animation: inv-in 0.4s ease both;
+  }
+  .inv-client {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .inv-client strong { color: var(--ink); }
+  .inv-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+  }
+  .inv-table-wrap {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid var(--line-light);
+    animation: inv-in 0.5s ease 0.05s both;
+  }
+  .inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+  .inv-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    padding: 14px 14px;
+    border-bottom: 1px solid var(--line-light);
+    background: rgba(10, 31, 61, 0.02);
+  }
+  .inv-table td {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--line-light);
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .inv-table tbody tr {
+    cursor: pointer;
+    transition: background 0.18s ease;
+  }
+  .inv-table tbody tr:hover { background: rgba(110, 193, 119, 0.06); }
+  .inv-table tbody tr:last-child td { border-bottom: 0; }
+  .inv-table .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .inv-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .inv-status.paid { color: #1f7a4d; }
+  .inv-status.void { color: var(--mute); }
+  .inv-status.draft { color: var(--mute); }
+  .inv-status.viewed { color: #0b6e4f; }
+  .inv-status .ico { width: 0.85rem; height: 0.85rem; color: inherit; }
+  .inv-detail { animation: inv-in 0.4s ease both; }
+  .inv-detail-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding: 22px 22px;
+    background: #fff;
+    border: 1px solid var(--line-light);
+  }
+  .inv-detail h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.05rem);
+    letter-spacing: -0.03em;
+  }
+  .inv-meta {
+    display: grid;
+    gap: 8px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .inv-meta strong { color: var(--ink); }
+  .inv-meta .due-emphasis {
+    margin-top: 4px;
+    padding: 8px 10px;
+    background: rgba(110, 193, 119, 0.08);
+    border: 1px solid rgba(110, 193, 119, 0.22);
+    color: var(--ink);
+  }
+  .inv-meta .due-emphasis strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+  }
+  .inv-brand-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .inv-brand-bar .portal-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .inv-lines-wrap {
+    background: #fff;
+    border: 1px solid var(--line-light);
+    overflow-x: auto;
+  }
+  .inv-lines {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+  }
+  .inv-lines th,
+  .inv-lines td {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--line-light);
+    text-align: left;
+    font-size: 0.92rem;
+  }
+  .inv-lines th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    background: rgba(10, 31, 61, 0.02);
+  }
+  .inv-lines .right { text-align: right; }
+  .inv-totals {
+    margin: 18px 0 0 auto;
+    max-width: 280px;
+    display: grid;
+    gap: 8px;
+    font-size: 0.95rem;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid var(--line-light);
+  }
+  .inv-totals div {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    color: var(--ink-soft);
+  }
+  .inv-totals .grand {
+    color: var(--ink);
+    font-weight: 700;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-light);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .inv-notes,
+  .inv-ach {
+    margin-top: 22px;
+    max-width: 64ch;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1px solid var(--line-light);
+  }
+  .inv-notes { border-left: 3px solid var(--accent); }
+  .inv-notes h3,
+  .inv-ach h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .inv-notes p {
+    margin: 0;
+    color: var(--ink-soft);
+    white-space: pre-wrap;
+  }
+  .inv-ach {
+    background: linear-gradient(180deg, rgba(110, 193, 119, 0.06), #fff 48%);
+  }
+  .inv-ach .inv-ach-lead {
+    color: var(--mute);
+    font-size: 0.88rem;
+    margin: 0 0 14px;
+  }
+  .inv-ach-grid { display: grid; gap: 10px; }
+  .inv-ach-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .inv-ach-row span { color: var(--mute); }
+  .inv-ach-row strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-all;
+    color: var(--ink);
+  }
+  .inv-ach-instructions {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-light);
+    color: var(--ink-soft);
+    white-space: pre-wrap;
+  }
+  .inv-ach-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .inv-ach-note {
+    margin: 10px 0 0;
+    font-size: 0.82rem;
+    color: var(--mute);
+    line-height: 1.45;
+  }
+  .inv-sel {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .inv-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .inv-row-actions .btn {
+    font-size: 0.78rem;
+    padding: 8px 12px;
+  }
+  .inv-empty {
+    display: grid;
+    place-items: center;
+    gap: 10px;
+    padding: 48px 20px;
+    text-align: center;
+    color: var(--mute);
+    background: #fff;
+    border: 1px solid var(--line-light);
+  }
+  .inv-empty .ico { width: 2rem; height: 2rem; }
+  .inv-empty p { margin: 0; max-width: 36ch; line-height: 1.5; }
+  .inv-empty .inv-actions { justify-content: center; margin-top: 6px; }
+  .hidden { display: none !important; }
+  @keyframes inv-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (max-width: 640px) {
+    .inv-meta { text-align: left; }
+    .inv-gate { padding: 22px 18px; }
+    .inv-detail-head { padding: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .inv-gate, .inv-toolbar, .inv-table-wrap, .inv-detail { animation: none; }
+  }
+</style>
+</head>
+<body>
+<svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="ico-unlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L20 3l2 2-2.5 2.5L21 9l-2 2-1.5-1.5"/></symbol>
+  <symbol id="ico-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l5 5V20.5a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 20.5v-15A1.5 1.5 0 0 1 7 3.5z"/><path d="M14 3.5V9h5.5M9 13h6M9 17h4"/></symbol>
+  <symbol id="ico-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l5 5V20.5a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 20.5v-15A1.5 1.5 0 0 1 7 3.5z"/><path d="M14 3.5V9h5.5"/><path d="M8.5 15.5c.8-2 1.4-2.8 2.8-2.8 1.2 0 1.5.8 1.5 1.5S12 16 10.8 16H9.2v2"/><path d="M14.5 12.5v5.5h1.2a1.8 1.8 0 0 0 0-3.6H14.5"/></symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.3 2.3 4.7-4.8"/></symbol>
+  <symbol id="ico-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10.5v7M9.5 10.5v7M14.5 10.5v7M19 10.5v7"/><path d="M3.5 20.5h17"/></symbol>
+  <symbol id="ico-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H10"/><path d="M14 16.5 18.5 12 14 7.5M18.5 12H9"/></symbol>
+  <symbol id="ico-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13.5V6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v7"/><path d="M4 13.5l3.2 4.8A1.5 1.5 0 0 0 8.5 19h7a1.5 1.5 0 0 0 1.3-.7L20 13.5"/><path d="M4 13.5h4.5l1.2 2h4.6l1.2-2H20"/></symbol>
+  <symbol id="ico-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="12" height="16" rx="1.5"/><path d="M9 5V4h6v1M9 11h6M9 15h4"/></symbol>
+  <symbol id="ico-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 18.5a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15 18.5a4.5 4.5 0 0 1 5.5-4.2"/></symbol>
+</svg>
+
+<header class="topbar">
+  <a class="logo" href="/"><img src="/assets/aa-logo-horizontal.png" alt="Advanced Autoponics"></a>
+  <nav aria-label="Primary">
+    <a href="/">Home</a>
+    <a href="/services.html">Services</a>
+    <a href="/#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="inv-shell">
+  <div class="inv-panel">
+    <div class="inv-brand-bar">
+      <p class="inv-kicker" style="margin:0"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-lock"></use></svg> Client portal</p>
+      <span class="portal-tag">Advanced Autoponics, LLC</span>
+    </div>
+    <h1 class="inv-brand">Autoponics invoices</h1>
+    <p class="inv-lead" id="inv-lead">Enter the access code provided by Advanced Autoponics, LLC to view invoices for your organization only.</p>
+
+    <section id="view-login" class="inv-gate" aria-label="Access code">
+      <div class="inv-gate-head">
+        <div class="mark" aria-hidden="true"><svg class="ico ico-md"><use href="#ico-key"></use></svg></div>
+        <div>
+          <h2>Secure access</h2>
+          <p>Use the code Advanced Autoponics, LLC shared with you</p>
+        </div>
+      </div>
+      <form id="login-form">
+        <label class="inv-label" for="access-code">Access code</label>
+        <input
+          class="inv-input"
+          id="access-code"
+          name="code"
+          type="text"
+          autocomplete="one-time-code"
+          autocapitalize="characters"
+          spellcheck="false"
+          inputmode="text"
+          required
+          minlength="6"
+          placeholder="ORG-XXXX-XXXX"
+        >
+        <div class="inv-actions">
+          <button class="btn primary" type="submit">
+            <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-unlock"></use></svg>
+            View invoices
+          </button>
+        </div>
+        <p class="inv-msg" id="login-error" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="view-list" class="hidden" aria-label="Invoice list">
+      <div class="inv-toolbar">
+        <p class="inv-client">
+          <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-users"></use></svg>
+          Signed in as <strong id="client-name"></strong>
+        </p>
+        <div class="inv-actions" style="margin:0">
+          <button class="btn ghost" type="button" id="btn-logout">
+            <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-logout"></use></svg>
+            Sign out
+          </button>
+        </div>
+      </div>
+      <h2 class="inv-section-title"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-file"></use></svg> Your invoices</h2>
+      <div class="inv-table-wrap">
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Issued</th>
+              <th>Due</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="invoice-rows"></tbody>
+        </table>
+      </div>
+      <div class="inv-empty hidden" id="list-empty">
+        <svg class="ico ico-lg ico-mute" aria-hidden="true"><use href="#ico-inbox"></use></svg>
+        <p>You’re signed in, but there are no invoices for this account yet. Questions? Email billing@advancedautoponics.com.</p>
+        <div class="inv-actions">
+          <a class="btn primary" href="mailto:billing@advancedautoponics.com?subject=Invoice%20question">Email billing</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-detail" class="inv-detail hidden" aria-label="Invoice detail">
+      <div class="inv-actions" style="margin-bottom:18px">
+        <button class="btn ghost" type="button" id="btn-back">← All invoices</button>
+        <button class="btn primary" type="button" id="btn-pdf-detail">
+          <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-pdf"></use></svg>
+          Download PDF
+        </button>
+        <button class="btn ghost" type="button" id="btn-logout-detail">
+          <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-logout"></use></svg>
+          Sign out
+        </button>
+      </div>
+      <div class="inv-detail-head">
+        <div>
+          <p class="mono" style="color:var(--mute);margin-bottom:6px;" id="detail-status"></p>
+          <h2 id="detail-number"></h2>
+        </div>
+        <div class="inv-meta">
+          <div>Issued <strong id="detail-issue"></strong></div>
+          <div class="due-emphasis">Due <strong id="detail-due"></strong></div>
+          <div>Bill to <strong id="detail-client"></strong></div>
+        </div>
+      </div>
+      <div class="inv-lines-wrap">
+        <table class="inv-lines">
+          <thead>
+            <tr>
+              <th>Service / description</th>
+              <th class="right">Qty</th>
+              <th class="right">Unit</th>
+              <th class="right">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="detail-lines"></tbody>
+        </table>
+      </div>
+      <div class="inv-totals">
+        <div><span>Subtotal</span><span id="detail-subtotal"></span></div>
+        <div><span>Tax</span><span id="detail-tax"></span></div>
+        <div class="grand"><span>Total</span><span id="detail-total"></span></div>
+      </div>
+      <div class="inv-notes hidden" id="detail-comments">
+        <h3><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-clipboard"></use></svg> Comments / billing info</h3>
+        <p id="detail-comments-body"></p>
+      </div>
+      <div class="inv-ach hidden" id="detail-ach">
+        <h3><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-bank"></use></svg> Pay by ACH</h3>
+        <p class="inv-ach-lead">Routing and account numbers for this invoice. Masked until you reveal them for payment.</p>
+        <div class="inv-ach-grid" id="detail-ach-grid"></div>
+        <div class="inv-ach-actions">
+          <button class="btn ghost" type="button" id="btn-reveal-ach">Show for payment</button>
+          <button class="btn ghost hidden" type="button" id="btn-hide-ach">Hide account numbers</button>
+        </div>
+        <p class="inv-ach-note">Full routing and account numbers are included when you download the PDF.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="links">
+    <a href="/">Home</a>
+    <a href="/services.html">Services</a>
+    <a href="/#contact">Contact</a>
+    <a href="/invoices" aria-current="page">Client invoices</a>
+  </div>
+  <p>© 2026 Advanced Autoponics, LLC · Lakewood, CO · (608) 320-0213</p>
+</footer>
+
+<script src="/assets/jspdf.umd.min.js"></script>
+<script src="/assets/invoice-pdf.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const views = {
+    login: $('view-login'),
+    list: $('view-list'),
+    detail: $('view-detail')
+  };
+  let currentDetail = null;
+  /** True after leave-logout or explicit logout until the user signs in again. */
+  let sessionEnded = false;
+  /** Skip leave-logout briefly around PDF download (rare pagehide from <a download>). */
+  let suppressLeaveLogoutUntil = 0;
+
+  function ico(id, cls = 'ico ico-sm') {
+    return `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#${id}"></use></svg>`;
+  }
+
+  function suppressLeaveLogout(ms = 5000) {
+    suppressLeaveLogoutUntil = Date.now() + ms;
+  }
+
+  function resetClientUiToLogin(msg) {
+    currentDetail = null;
+    clearListNotice();
+    $('access-code').value = '';
+    $('login-error').textContent = msg || '';
+    show('login');
+  }
+
+  /** End server session during unload / tab hide (keepalive so it survives page teardown). */
+  function beaconLogout() {
+    try {
+      fetch('/api/invoices/logout', {
+        method: 'POST',
+        body: '{}',
+        keepalive: true,
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' }
+      }).catch(() => {});
+    } catch {
+      try {
+        navigator.sendBeacon?.(
+          '/api/invoices/logout',
+          new Blob(['{}'], { type: 'application/json' })
+        );
+      } catch { /* ignore */ }
+    }
+  }
+
+  function endSessionOnLeave() {
+    if (sessionEnded) return;
+    if (Date.now() < suppressLeaveLogoutUntil) return;
+    sessionEnded = true;
+    beaconLogout();
+    const alreadyLogin = views.login && !views.login.classList.contains('hidden');
+    if (!alreadyLogin) {
+      resetClientUiToLogin(
+        deepLinkId()
+          ? 'Session ended. Enter your access code to return to this invoice.'
+          : 'Session ended. Enter your access code to continue.'
+      );
+    } else {
+      currentDetail = null;
+    }
+  }
+
+  function ensureLoginAfterLeave() {
+    if (!sessionEnded) return;
+    // Stay on login until a successful access-code sign-in (sessionEnded cleared there).
+    if (views.login?.classList.contains('hidden')) {
+      resetClientUiToLogin(
+        deepLinkId()
+          ? 'Session ended. Enter your access code to return to this invoice.'
+          : 'Session ended. Enter your access code to continue.'
+      );
+    }
+  }
+
+  function deepLinkId() {
+    return new URLSearchParams(window.location.search).get('id')?.trim() || '';
+  }
+
+  function setDeepLink(id) {
+    const url = new URL(window.location.href);
+    if (url.pathname.endsWith('.html')) {
+      url.pathname = url.pathname.replace(/\.html$/i, '') || '/';
+    }
+    if (id) url.searchParams.set('id', id);
+    else url.searchParams.delete('id');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+  }
+
+  function show(name) {
+    Object.entries(views).forEach(([key, el]) => {
+      el.classList.toggle('hidden', key !== name);
+    });
+    const lead = $('inv-lead');
+    if (lead) lead.classList.toggle('hidden', name !== 'login');
+  }
+
+  function loginErrorMessage(res, data) {
+    if (data?.error) return data.error;
+    if (!res) return 'Network error — check your connection and try again.';
+    if (res.status === 429) {
+      return 'Too many failed sign-in attempts. Wait a few minutes, then try again with the access code Advanced Autoponics, LLC shared with you — do not guess.';
+    }
+    if (res.status === 401) {
+      return 'That access code is not valid. Check the code Advanced Autoponics, LLC sent you and try again.';
+    }
+    if (res.status === 403) {
+      return 'Access blocked (HTTP 403). Contact Advanced Autoponics, LLC if this persists.';
+    }
+    if (res.status >= 500) {
+      return `Server error (HTTP ${res.status}) — please try again in a moment.`;
+    }
+    if (res.status > 0) {
+      return `Unable to sign in (HTTP ${res.status}). Please try again.`;
+    }
+    return 'Unable to sign in. Please try again.';
+  }
+
+  function money(cents, currency) {
+    return AutoponicsInvoicePdf.money(cents, currency);
+  }
+
+  function escapeHtml(str) {
+    return AutoponicsInvoicePdf.escapeHtml(str);
+  }
+
+  function statusHtml(status) {
+    const s = String(status || 'sent').toLowerCase();
+    const map = {
+      paid: ['ico-check', 'inv-status paid'],
+      void: ['ico-inbox', 'inv-status void'],
+      draft: ['ico-file', 'inv-status draft'],
+      viewed: ['ico-file', 'inv-status viewed'],
+      sent: ['ico-file', 'inv-status']
+    };
+    const [icon, cls] = map[s] || ['ico-file', 'inv-status'];
+    return `<span class="${cls}">${ico(icon)} ${escapeHtml(status || 'sent')}</span>`;
+  }
+
+  function renderAch(ach, { revealed } = {}) {
+    const grid = $('detail-ach-grid');
+    grid.innerHTML = '';
+    const rows = AutoponicsInvoicePdf.achDetailRows(ach, {
+      masked: !revealed && (ach?.masked || !ach?.revealed)
+    });
+    rows.forEach(([label, value]) => {
+      const row = document.createElement('div');
+      row.className = 'inv-ach-row';
+      row.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong>`;
+      grid.appendChild(row);
+    });
+    $('btn-reveal-ach').classList.toggle('hidden', Boolean(revealed));
+    $('btn-hide-ach').classList.toggle('hidden', !revealed);
+  }
+
+  function showListNotice(msg) {
+    let note = document.getElementById('deep-link-error');
+    if (!note) {
+      note = document.createElement('p');
+      note.id = 'deep-link-error';
+      note.className = 'inv-msg';
+      note.setAttribute('role', 'alert');
+      const panel = document.querySelector('#view-list .inv-toolbar');
+      if (panel) panel.after(note);
+      else $('view-list')?.prepend(note);
+    }
+    note.textContent = msg;
+  }
+
+  function clearListNotice() {
+    document.getElementById('deep-link-error')?.remove();
+  }
+
+  async function api(path, options = {}) {
+    const { headers: extraHeaders, ...rest } = options;
+    let res;
+    try {
+      res = await fetch(path, {
+        credentials: 'same-origin',
+        ...rest,
+        headers: { 'Content-Type': 'application/json', ...(extraHeaders || {}) }
+      });
+    } catch (err) {
+      const error = new Error(
+        'Network error — check your connection and try again.'
+      );
+      error.cause = err;
+      error.network = true;
+      throw error;
+    }
+    let data = null;
+    const ctype = (res.headers.get('content-type') || '').toLowerCase();
+    try {
+      if (ctype.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        if (text && text.trim().startsWith('{')) {
+          try { data = JSON.parse(text); } catch { data = null; }
+        }
+        // Non-JSON (HTML 404/502, etc.) — surface status instead of pretending it's a network failure.
+        if (!data && !res.ok) {
+          data = {
+            error: `Server error (HTTP ${res.status}) — please try again in a moment.`,
+            code: 'non_json_response'
+          };
+        }
+      }
+    } catch {
+      data = res.ok
+        ? null
+        : {
+            error: `Server error (HTTP ${res.status}) — please try again in a moment.`,
+            code: 'bad_response'
+          };
+    }
+    return { res, data };
+  }
+
+  async function fetchInvoice(id) {
+    return api(`/api/invoices/${encodeURIComponent(id)}`);
+  }
+
+  function exportPdf(invoice, clientName) {
+    suppressLeaveLogout(5000);
+    return AutoponicsInvoicePdf.exportInvoicePdf({ invoice, clientName });
+  }
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async function afterAuth() {
+    const target = deepLinkId();
+    if (target) {
+      const ok = await openDetail(target, { fromDeepLink: true, retryAuth: true });
+      if (ok) return;
+    }
+    await loadList({ clearDeepLink: !target });
+  }
+
+  async function loadSession() {
+    const { res, data } = await api('/api/invoices/session');
+    if (!res.ok) {
+      show('login');
+      if (deepLinkId()) {
+        $('login-error').textContent = 'Enter your access code to view this invoice.';
+      }
+      return null;
+    }
+    $('client-name').textContent = data.client?.name || 'Client';
+    await afterAuth();
+    return data.client;
+  }
+
+  let listClientName = 'Client';
+
+  async function loadList(opts = {}) {
+    const clearDeepLink = opts.clearDeepLink !== false;
+    const { res, data } = await api('/api/invoices');
+    if (!res.ok) {
+      show('login');
+      if (res.status === 401 && deepLinkId()) {
+        $('login-error').textContent = 'Enter your access code to view this invoice.';
+      }
+      return;
+    }
+    if (data.client?.name) $('client-name').textContent = data.client.name;
+    listClientName = data.client?.name || 'Client';
+    const rows = $('invoice-rows');
+    rows.innerHTML = '';
+    const invoices = data.invoices || [];
+    $('list-empty').classList.toggle('hidden', invoices.length > 0);
+    document.querySelector('.inv-table-wrap')?.classList.toggle('hidden', invoices.length === 0);
+    invoices.forEach((inv) => {
+      const tr = document.createElement('tr');
+      tr.dataset.id = inv.id;
+      tr.style.cursor = 'pointer';
+      tr.innerHTML = `
+        <td class="num">${escapeHtml(inv.number)}</td>
+        <td>${escapeHtml(inv.issue_date || '—')}</td>
+        <td>${escapeHtml(inv.due_date || '—')}</td>
+        <td>${statusHtml(inv.status)}</td>
+        <td class="num">${escapeHtml(money(inv.total_cents, inv.currency))}</td>
+        <td class="inv-row-actions">
+          <button class="btn ghost" type="button" data-act="view" data-id="${escapeHtml(inv.id)}">${ico('ico-file')} View</button>
+          <button class="btn ghost" type="button" data-act="pdf" data-id="${escapeHtml(inv.id)}">${ico('ico-pdf')} PDF</button>
+        </td>`;
+      rows.appendChild(tr);
+    });
+    if (clearDeepLink) {
+      clearListNotice();
+      setDeepLink('');
+    }
+    show('list');
+  }
+
+  // Event delegation — reliable View/PDF clicks (icons inside buttons used to miss handlers).
+  $('invoice-rows')?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-act]');
+    const tr = e.target.closest('tr[data-id]');
+    const id = btn?.dataset?.id || tr?.dataset?.id || '';
+    if (!id) return;
+
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (btn.dataset.act === 'view') {
+        try {
+          const ok = await openDetail(id);
+          if (!ok) showListNotice('Could not open that invoice. Try again or refresh.');
+        } catch (err) {
+          console.error('openDetail failed', err);
+          showListNotice('Could not open that invoice. Try again or refresh.');
+        }
+        return;
+      }
+      if (btn.dataset.act === 'pdf') {
+        try {
+          const detail = await api(`/api/invoices/${encodeURIComponent(id)}?reveal_ach=1`);
+          if (!detail.res.ok) {
+            showListNotice('Could not load invoice for PDF.');
+            return;
+          }
+          await exportPdf(detail.data.invoice, detail.data.client?.name || listClientName);
+        } catch (err) {
+          console.error('PDF export failed', err);
+          showListNotice('Could not download PDF. Try again.');
+        }
+      }
+      return;
+    }
+
+    // Row click → detail
+    try {
+      await openDetail(id);
+    } catch (err) {
+      console.error('openDetail failed', err);
+      showListNotice('Could not open that invoice. Try again or refresh.');
+    }
+  });
+
+  async function openDetail(id, opts = {}) {
+    if (!id) return false;
+    let res;
+    let data;
+    try {
+      ({ res, data } = await fetchInvoice(id));
+      if (!res.ok && res.status === 401 && opts.retryAuth) {
+        await sleep(50);
+        ({ res, data } = await fetchInvoice(id));
+      }
+    } catch (err) {
+      console.error('fetchInvoice failed', err);
+      showListNotice('Network error loading invoice. Check your connection and try again.');
+      return false;
+    }
+    if (!res.ok) {
+      if (res.status === 401) {
+        show('login');
+        $('login-error').textContent = deepLinkId()
+          ? 'Enter your access code to view this invoice.'
+          : 'Session expired. Enter your access code again.';
+        return false;
+      }
+      const msg = data?.error || 'Invoice not found or not available for this account.';
+      if (opts.fromDeepLink) {
+        await loadList({ clearDeepLink: false });
+        showListNotice(msg);
+        $('login-error').textContent = msg;
+      } else {
+        showListNotice(msg);
+      }
+      return false;
+    }
+    try {
+      const inv = data.invoice;
+      if (!inv) {
+        showListNotice('Invoice data missing from server response.');
+        return false;
+      }
+      currentDetail = { invoice: inv, clientName: data.client?.name || '—' };
+      clearListNotice();
+      setDeepLink(inv.id);
+      $('detail-status').innerHTML = statusHtml(inv.status);
+      $('detail-number').textContent = inv.number;
+      $('detail-issue').textContent = inv.issue_date || '—';
+      $('detail-due').textContent = inv.due_date || '—';
+      $('detail-client').textContent = data.client?.name || '—';
+      $('detail-subtotal').textContent = money(inv.subtotal_cents, inv.currency);
+      $('detail-tax').textContent = money(inv.tax_cents, inv.currency);
+      $('detail-total').textContent = money(inv.total_cents, inv.currency);
+
+      const lines = $('detail-lines');
+      lines.innerHTML = '';
+      (inv.line_items || []).forEach((item) => {
+        const amount = Math.round((Number(item.quantity) || 0) * (Number(item.unit_price_cents) || 0));
+        const sel = item.selection_label || item.selection || '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${sel ? `<span class="inv-sel">${escapeHtml(sel)}</span>` : ''}${escapeHtml(item.description || '')}</td>
+          <td class="right">${escapeHtml(String(item.quantity ?? ''))}</td>
+          <td class="right">${escapeHtml(money(item.unit_price_cents, inv.currency))}</td>
+          <td class="right">${escapeHtml(money(amount, inv.currency))}</td>
+        `;
+        lines.appendChild(tr);
+      });
+
+      const comments = inv.comments || inv.notes || '';
+      const box = $('detail-comments');
+      if (comments) {
+        $('detail-comments-body').textContent = comments;
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+
+      const achBox = $('detail-ach');
+      const ach = inv.ach;
+      if (AutoponicsInvoicePdf.hasAch(ach)) {
+        renderAch(ach, { revealed: Boolean(ach.revealed) });
+        achBox.classList.remove('hidden');
+      } else {
+        achBox.classList.add('hidden');
+      }
+      show('detail');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return true;
+    } catch (err) {
+      console.error('render detail failed', err);
+      showListNotice('Could not display invoice. Try refreshing the page.');
+      return false;
+    }
+  }
+
+  async function revealAch(show) {
+    if (!currentDetail?.invoice?.id) return;
+    const id = currentDetail.invoice.id;
+    const path = show
+      ? `/api/invoices/${encodeURIComponent(id)}?reveal_ach=1`
+      : `/api/invoices/${encodeURIComponent(id)}`;
+    const { res, data } = await api(path);
+    if (!res.ok) return;
+    currentDetail.invoice = data.invoice;
+    currentDetail.clientName = data.client?.name || currentDetail.clientName;
+    if (AutoponicsInvoicePdf.hasAch(data.invoice.ach)) {
+      renderAch(data.invoice.ach, { revealed: show });
+    }
+  }
+
+  async function logout() {
+    sessionEnded = true;
+    const keepId = deepLinkId();
+    try {
+      await api('/api/invoices/logout', { method: 'POST', body: '{}' });
+    } catch {
+      beaconLogout();
+    }
+    resetClientUiToLogin(
+      keepId
+        ? 'Signed out. Enter your access code to return to this invoice.'
+        : ''
+    );
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) endSessionOnLeave();
+    else ensureLoginAfterLeave();
+  });
+  window.addEventListener('pagehide', () => endSessionOnLeave());
+  window.addEventListener('pageshow', (e) => {
+    // bfcache restore — never resume a portal session from a frozen page.
+    if (e.persisted) {
+      sessionEnded = true;
+      beaconLogout();
+      resetClientUiToLogin(
+        deepLinkId()
+          ? 'Session ended. Enter your access code to return to this invoice.'
+          : 'Session ended. Enter your access code to continue.'
+      );
+      return;
+    }
+    ensureLoginAfterLeave();
+  });
+
+  $('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = $('login-error');
+    err.textContent = '';
+    const btn = e.submitter || $('login-form').querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+    const code = $('access-code').value.trim().replace(/\s+/g, '').toUpperCase();
+    $('access-code').value = code;
+    let loggedIn = false;
+    try {
+      const { res, data } = await api('/api/invoices/login', {
+        method: 'POST',
+        body: JSON.stringify({ code })
+      });
+      if (!res.ok) {
+        err.textContent = loginErrorMessage(res, data);
+        return;
+      }
+      loggedIn = true;
+      sessionEnded = false;
+      $('client-name').textContent = data.client?.name || 'Client';
+      try {
+        await afterAuth();
+      } catch (postErr) {
+        // Cookie was set — do not call this a network failure.
+        console.error('Portal post-login error', postErr);
+        err.textContent =
+          'Signed in, but invoices failed to load. Refresh the page or try again.';
+        show('login');
+      }
+    } catch (ex) {
+      if (loggedIn) {
+        err.textContent =
+          'Signed in, but invoices failed to load. Refresh the page or try again.';
+      } else if (ex?.network) {
+        err.textContent = 'Network error — check your connection and try again.';
+      } else {
+        err.textContent = ex?.message || 'Unable to sign in. Please try again.';
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  });
+
+  $('btn-logout').addEventListener('click', logout);
+  $('btn-logout-detail').addEventListener('click', logout);
+  $('btn-back').addEventListener('click', () => loadList({ clearDeepLink: true }));
+  $('btn-pdf-detail').addEventListener('click', async () => {
+    if (!currentDetail) return;
+    // PDF needs full ACH numbers — fetch revealed copy for export only.
+    const id = currentDetail.invoice.id;
+    const { res, data } = await api(`/api/invoices/${encodeURIComponent(id)}?reveal_ach=1`);
+    const invoice = res.ok ? data.invoice : currentDetail.invoice;
+    const clientName = res.ok ? (data.client?.name || currentDetail.clientName) : currentDetail.clientName;
+    exportPdf(invoice, clientName);
+  });
+  $('btn-reveal-ach')?.addEventListener('click', () => revealAch(true));
+  $('btn-hide-ach')?.addEventListener('click', () => revealAch(false));
+
+  loadSession();
+})();
+</script>
+</body>
+</html>

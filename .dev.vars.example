@@ -1,0 +1,14 @@
+# Copy to .dev.vars for local `npx wrangler dev` (never commit .dev.vars)
+SESSION_SECRET=replace-with-long-random-string
+ADMIN_SECRET=replace-with-long-random-string
+# Optional: separate key for encrypting access codes shown in admin.
+# If unset, ADMIN_SECRET is used (PBKDF2 → AES-GCM). Prefer setting this in production.
+# CODE_VAULT_SECRET=replace-with-another-long-random-string
+# Skip IP allowlist locally (also skipped when unset)
+ENVIRONMENT=dev
+# Optional: comma-separated IPs/CIDRs (enforced only when ENVIRONMENT is not dev)
+# ADMIN_IP_ALLOWLIST=127.0.0.1,203.0.113.0/24
+# Optional invoice email (Resend)
+# RESEND_API_KEY=re_xxxxxxxx
+# INVOICE_FROM=Advanced Autoponics, LLC <billing@advancedautoponics.com>
+# INVOICE_REPLY_TO=billing@advancedautoponics.com

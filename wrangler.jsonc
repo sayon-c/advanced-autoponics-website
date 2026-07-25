@@ -1,13 +1,46 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  // Advanced Autoponics — Workers static assets + invoice/analytics API (D1).
+  // Secrets (`npx wrangler secret put <NAME>`):
+  //   SESSION_SECRET       — HMAC key for invoice session cookies + analytics fallback
+  //   ADMIN_SECRET         — Bearer / X-Admin-Secret for /api/invoices/admin/* and /api/analytics/summary
+  //   CODE_VAULT_SECRET    — optional; encrypts access codes for admin reveal (defaults to ADMIN_SECRET)
+  //   ADMIN_IP_ALLOWLIST   — optional comma-separated IPs/CIDRs (CF-Connecting-IP)
+  //   ENVIRONMENT          — set `dev` locally to skip IP allowlist
+  //   RESEND_API_KEY       — optional invoice email
+  //   INVOICE_FROM         — e.g. Advanced Autoponics, LLC <billing@advancedautoponics.com>
+  //   INVOICE_REPLY_TO     — Reply-To (defaults to billing@advancedautoponics.com)
   "name": "advanced-autoponics-website",
+  "main": "worker/index.js",
   "compatibility_date": "2026-07-18",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "INVOICE_FROM": "Advanced Autoponics, LLC <billing@advancedautoponics.com>",
+    "INVOICE_REPLY_TO": "billing@advancedautoponics.com"
+  },
   "assets": {
     "directory": ".",
-    "html_handling": "auto-trailing-slash"
-  }
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": [
+      "/api/*",
+      "/admin-invoices",
+      "/admin-invoices.html",
+      "/aa-billing-desk",
+      "/aa-billing-desk.html",
+      "/admin",
+      "/admin/*"
+    ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "advanced-autoponics-invoices",
+      "database_id": "ccf426e0-5724-4182-99c6-167537af0ad0",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

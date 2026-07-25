@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unlock | Advanced Autoponics Control Surface</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .ico {
+    display: inline-block;
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    color: var(--accent);
+    vertical-align: -0.2em;
+  }
+  .ico-md { width: 1.4rem; height: 1.4rem; }
+  .ico use { pointer-events: none; }
+
+  .gate-shell {
+    min-height: calc(100vh - 72px);
+    display: grid;
+    place-items: center;
+    padding: 32px 18px 64px;
+    background:
+      radial-gradient(ellipse at 18% 0%, rgba(110, 193, 119, 0.16) 0%, transparent 46%),
+      radial-gradient(ellipse at 90% 30%, rgba(10, 31, 61, 0.06) 0%, transparent 40%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+  .gate-card {
+    width: min(100%, 420px);
+    padding: 28px 26px;
+    background: #fff;
+    border: 1px solid var(--line-light);
+    box-shadow: 0 18px 40px rgba(10, 31, 61, 0.07);
+    animation: gate-in 0.4s ease both;
+  }
+  .gate-mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: rgba(110, 193, 119, 0.1);
+    margin-bottom: 14px;
+  }
+  .gate-card h1 {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: clamp(1.9rem, 4vw, 2.3rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .gate-card .lead {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 0 0 22px;
+    line-height: 1.5;
+  }
+  .gate-card label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 8px;
+  }
+  .gate-card input {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px 16px;
+    border: 1px solid var(--line-light);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    outline: none;
+  }
+  .gate-card input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(110, 193, 119, 0.15);
+    background: #fff;
+  }
+  .gate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .gate-shell .btn {
+    border-color: rgba(10, 31, 61, 0.14);
+    gap: 8px;
+  }
+  .gate-shell .btn.primary .ico { color: #fff; }
+  .gate-msg {
+    margin-top: 14px;
+    min-height: 1.2em;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .gate-msg.err { color: #b42318; }
+  .gate-checking {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  @keyframes gate-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gate-card { animation: none; }
+  }
+</style>
+</head>
+<body>
+<svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="ico-unlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L20 3l2 2-2.5 2.5L21 9l-2 2-1.5-1.5"/></symbol>
+  <symbol id="ico-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></symbol>
+</svg>
+<header class="topbar">
+  <a class="logo" href="/"><img src="assets/aa-logo-horizontal.png" alt="Advanced Autoponics"></a>
+</header>
+<main class="gate-shell">
+  <div class="gate-card" id="gate-panel">
+    <p class="gate-checking" id="gate-status" hidden>
+      <svg class="ico" aria-hidden="true"><use href="#ico-refresh"></use></svg>
+      Checking session…
+    </p>
+    <div id="gate-form-wrap">
+      <div class="gate-mark" aria-hidden="true"><svg class="ico ico-md"><use href="#ico-lock"></use></svg></div>
+      <h1>Control Surface</h1>
+      <p class="lead">Enter the access secret to open the billing control surface.</p>
+      <form id="gate-form" method="post" action="#">
+        <label for="unlock-secret"><svg class="ico" aria-hidden="true"><use href="#ico-key"></use></svg> Access secret</label>
+        <input
+          id="unlock-secret"
+          name="secret"
+          type="password"
+          autocomplete="current-password"
+          enterkeyhint="go"
+          required
+          autofocus
+        >
+        <div class="gate-actions">
+          <button class="btn primary" type="submit" id="btn-unlock">
+            <svg class="ico" aria-hidden="true"><use href="#ico-unlock"></use></svg>
+            Unlock
+          </button>
+        </div>
+        <p class="gate-msg" id="gate-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  const SECRET_KEY = 'aa_admin_secret';
+  const APP_PATH = '/aa-billing-desk.html';
+
+  const form = document.getElementById('gate-form');
+  const input = document.getElementById('unlock-secret');
+  const msg = document.getElementById('gate-msg');
+  const status = document.getElementById('gate-status');
+  const formWrap = document.getElementById('gate-form-wrap');
+  const btn = document.getElementById('btn-unlock');
+
+  function setMsg(text, isErr) {
+    msg.textContent = text || '';
+    msg.classList.toggle('err', !!isErr);
+  }
+
+  async function verifySecret(secret) {
+    const res = await fetch('/api/invoices/admin/session', {
+      headers: { Authorization: `Bearer ${secret}` },
+      credentials: 'same-origin'
+    });
+    let data = null;
+    try { data = await res.json(); } catch {}
+    return { ok: res.ok && data?.ok === true, error: data?.error };
+  }
+
+  async function tryStoredSession() {
+    const stored = sessionStorage.getItem(SECRET_KEY);
+    if (!stored) return false;
+    status.hidden = false;
+    formWrap.hidden = true;
+    const { ok } = await verifySecret(stored);
+    if (ok) {
+      location.replace(APP_PATH + '#/dashboard');
+      return true;
+    }
+    sessionStorage.removeItem(SECRET_KEY);
+    status.hidden = true;
+    formWrap.hidden = false;
+    return false;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const secret = input.value.trim();
+    if (!secret) {
+      setMsg('Enter the access secret.', true);
+      return;
+    }
+    btn.disabled = true;
+    setMsg('Verifying…');
+    try {
+      const { ok, error } = await verifySecret(secret);
+      if (!ok) {
+        setMsg(error || 'Invalid secret.', true);
+        return;
+      }
+      sessionStorage.setItem(SECRET_KEY, secret);
+      location.assign(APP_PATH + '#/dashboard');
+    } catch {
+      setMsg('Could not reach the server.', true);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  tryStoredSession();
+})();
+</script>
+</body>
+</html>
