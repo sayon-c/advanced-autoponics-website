@@ -1,15 +1,17 @@
 import { json, clean } from '../../_lib/http.js';
 import { requireDb } from '../../_lib/auth.js';
-import { hashAccessCode } from '../../_lib/crypto.js';
-import { vaultSecret, encryptAccessCode, decryptAccessCode } from '../../_lib/code-vault.js';
 import {
   checkGeminySignupRateLimit,
   recordGeminySignupAttempt,
-  generateGeminyKey,
   isValidEmail,
   normalizeEmail,
   newGeminyKeyId,
-  sendGeminyAccessEmail
+  geminyDecisionSecret,
+  signGeminyDecision,
+  siteOriginFromRequest,
+  geminyDecisionUrls,
+  sendGeminyAdminNotifyEmail,
+  sendGeminyRequestReceivedEmail
 } from '../../_lib/geminy.js';
 import { emailConfigured } from '../../_lib/email.js';
 
@@ -20,17 +22,6 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
   const dbOk = requireDb(env);
   if (dbOk.error) return dbOk.error;
-
-  if (!emailConfigured(env)) {
-    return json(
-      {
-        error:
-          'Email delivery is not configured. An administrator must set RESEND_API_KEY on the Worker.',
-        code: 'resend_not_configured'
-      },
-      503
-    );
-  }
 
   const rate = await checkGeminySignupRateLimit(request, env);
   if (rate.limited) {
@@ -64,87 +55,83 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'Enter your company name.', code: 'invalid_company' }, 400);
   }
 
-  // Count this attempt for abuse protection (success and failure share the window).
   await recordGeminySignupAttempt(env, rate.ipHash);
 
-  const existing = await env.DB.prepare(
-    `SELECT id, email, company, key_enc, status
-     FROM geminy_keys
+  const existingActive = await env.DB.prepare(
+    `SELECT id, status FROM geminy_keys
      WHERE email = ? COLLATE NOCASE AND status = 'active'
-     ORDER BY created_at DESC
-     LIMIT 1`
+     ORDER BY created_at DESC LIMIT 1`
   )
     .bind(email)
     .first();
 
-  let accessKey = null;
-  let rowId = existing?.id || null;
-
-  if (existing?.key_enc) {
-    accessKey = await decryptAccessCode(existing.key_enc, vaultSecret(env));
+  if (existingActive) {
+    // Do not reveal key; do not auto-resend. Ask them to wait / contact.
+    return json({
+      ok: true,
+      message:
+        'You already have GeminyIoT access on file. If you need your key resent, email info@advancedautoponics.com.'
+    });
   }
 
-  if (!accessKey) {
-    accessKey = generateGeminyKey();
-    const keyHash = await hashAccessCode(accessKey);
-    const secret = vaultSecret(env);
-    const keyEnc = secret ? await encryptAccessCode(accessKey, secret) : null;
-    const now = new Date().toISOString();
+  const existingPending = await env.DB.prepare(
+    `SELECT id, email, company, status FROM geminy_keys
+     WHERE email = ? COLLATE NOCASE AND status = 'pending'
+     ORDER BY created_at DESC LIMIT 1`
+  )
+    .bind(email)
+    .first();
 
-    if (existing?.id) {
-      await env.DB.prepare(
-        `UPDATE geminy_keys
-         SET company = ?, key_hash = ?, key_enc = ?, ip_hash = ?
-         WHERE id = ?`
-      )
-        .bind(company, keyHash, keyEnc, rate.ipHash, existing.id)
-        .run();
-      rowId = existing.id;
-    } else {
-      rowId = newGeminyKeyId();
-      await env.DB.prepare(
-        `INSERT INTO geminy_keys
-          (id, email, company, key_hash, key_enc, status, created_at, last_sent_at, ip_hash)
-         VALUES (?, ?, ?, ?, ?, 'active', ?, NULL, ?)`
-      )
-        .bind(rowId, email, company, keyHash, keyEnc, now, rate.ipHash)
-        .run();
-    }
-  } else {
-    // Keep company fresh; refresh last_sent after successful send below.
+  const now = new Date().toISOString();
+  let rowId = existingPending?.id || null;
+
+  if (existingPending?.id) {
     await env.DB.prepare(
       `UPDATE geminy_keys SET company = ?, ip_hash = ? WHERE id = ?`
     )
-      .bind(company, rate.ipHash, existing.id)
+      .bind(company, rate.ipHash, existingPending.id)
+      .run();
+  } else {
+    rowId = newGeminyKeyId();
+    // Pending: no key yet. Empty key_hash satisfies NOT NULL from migration 0009.
+    await env.DB.prepare(
+      `INSERT INTO geminy_keys
+        (id, email, company, key_hash, key_enc, status, created_at, last_sent_at, ip_hash)
+       VALUES (?, ?, ?, '', NULL, 'pending', ?, NULL, ?)`
+    )
+      .bind(rowId, email, company, now, rate.ipHash)
       .run();
   }
 
-  const sent = await sendGeminyAccessEmail(env, {
-    to: email,
-    company,
-    accessKey
-  });
+  const origin = siteOriginFromRequest(request);
+  const secret = geminyDecisionSecret(env);
+  let adminEmailed = false;
+  let confirmEmailed = false;
 
-  if (!sent.sent) {
-    return json(
-      {
-        error: sent.error || 'Could not send the access email. Try again later.',
-        code: 'email_failed'
-      },
-      502
-    );
+  if (emailConfigured(env) && secret) {
+    const approveToken = await signGeminyDecision({ id: rowId, action: 'approve', secret });
+    const rejectToken = await signGeminyDecision({ id: rowId, action: 'reject', secret });
+    const urls = geminyDecisionUrls(origin, approveToken, rejectToken);
+
+    const adminSend = await sendGeminyAdminNotifyEmail(env, {
+      company,
+      email,
+      requestId: rowId,
+      ...urls
+    });
+    adminEmailed = Boolean(adminSend.sent);
+
+    const confirmSend = await sendGeminyRequestReceivedEmail(env, { to: email, company });
+    confirmEmailed = Boolean(confirmSend.sent);
   }
 
-  const sentAt = new Date().toISOString();
-  await env.DB.prepare(
-    `UPDATE geminy_keys SET last_sent_at = ? WHERE id = ?`
-  )
-    .bind(sentAt, rowId)
-    .run();
-
-  // Never return the key in the public response.
+  // Never return a key. Success even if Resend is unset — admin can approve in desk.
   return json({
     ok: true,
-    message: 'Check your email for your GeminyIoT alpha login key.'
+    message:
+      'Request received. We’ll review it and email a login key only if approved — nothing is issued automatically.',
+    notified_admin: adminEmailed,
+    confirmation_emailed: confirmEmailed,
+    email_configured: emailConfigured(env)
   });
 }

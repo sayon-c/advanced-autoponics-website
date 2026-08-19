@@ -12,6 +12,7 @@
   //   INVOICE_REPLY_TO     — Reply-To (defaults to billing@advancedautoponics.com)
   //   GEMINY_APP_URL       — login destination linked in Geminy access emails
   //   GEMINY_FROM          — optional Resend From for Geminy emails (defaults to info@)
+  //   GEMINY_ADMIN_EMAIL   — pending-request notify (defaults to info@advancedautoponics.com)
   "name": "advanced-autoponics-website",
   "main": "worker/index.js",
   "compatibility_date": "2026-07-18",
@@ -23,7 +24,8 @@
     "INVOICE_FROM": "Advanced Autoponics, LLC <billing@advancedautoponics.com>",
     "INVOICE_REPLY_TO": "billing@advancedautoponics.com",
     "GEMINY_APP_URL": "https://app.advancedautoponics.com",
-    "GEMINY_FROM": "Advanced Autoponics <info@advancedautoponics.com>"
+    "GEMINY_FROM": "Advanced Autoponics <info@advancedautoponics.com>",
+    "GEMINY_ADMIN_EMAIL": "info@advancedautoponics.com"
   },
   "assets": {
     "directory": ".",

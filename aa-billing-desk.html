@@ -717,7 +717,7 @@
       <a href="#/create"><strong>Create invoice</strong><span>New invoice for a client</span></a>
       <a href="#/invoices"><strong>Invoices</strong><span>Status, filters, send &amp; PDF</span></a>
       <a href="#/clients"><strong>Clients &amp; codes</strong><span>Access codes &amp; login unlock</span></a>
-      <a href="#/geminy"><strong>Geminy access</strong><span>Alpha signup keys</span></a>
+      <a href="#/geminy"><strong>Geminy access</strong><span>Approve alpha requests</span></a>
       <a href="#/activity"><strong>Views &amp; activity</strong><span>Who viewed what, audit log</span></a>
       <a href="#/settings"><strong>Settings</strong><span>ACH defaults (routing + account)</span></a>
     </div>
@@ -989,7 +989,7 @@
         </button>
       </div>
     </div>
-    <p class="hint">Public signup at <code>/#geminy-access</code> emails a login key via Resend. Keys are hashed for verify and encrypted for admin reveal. Public API never returns plaintext.</p>
+    <p class="hint">Public signup at <code>/#geminy-access</code> creates a <strong>pending</strong> request only — no login key until you Approve (desk or email link). Keys are hashed + vault-encrypted; public API never returns plaintext.</p>
     <p class="hint" id="geminy-meta">Loading…</p>
     <section class="panel">
       <div class="table-scroll">
@@ -1760,7 +1760,8 @@
     }
     if (meta) {
       const emailOk = data.email_configured ? 'Resend configured' : 'RESEND_API_KEY missing';
-      meta.textContent = `App URL: ${data.app_url || '—'} · ${emailOk} · ${ (data.keys || []).length } record(s)`;
+      const pending = data.pending_count != null ? data.pending_count : (data.keys || []).filter((k) => k.status === 'pending').length;
+      meta.textContent = `Pending: ${pending} · App URL: ${data.app_url || '—'} · ${emailOk} · ${(data.keys || []).length} record(s)`;
     }
     setMsg('geminy-msg', '');
     tbody.innerHTML = '';
@@ -1768,7 +1769,23 @@
     if (empty) empty.classList.toggle('hidden', keys.length > 0);
     for (const k of keys) {
       const tr = document.createElement('tr');
-      const keyText = k.access_key || (k.key_available ? '—' : 'Unavailable');
+      const keyText =
+        k.status === 'pending'
+          ? '— (pending)'
+          : k.access_key || (k.key_available ? '—' : 'Unavailable');
+      let actions = '';
+      if (k.status === 'pending') {
+        actions = `
+          <button class="btn primary" type="button" data-geminy-approve="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-check')} Approve</button>
+          <button class="btn ghost danger" type="button" data-geminy-reject="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-trash')} Reject</button>`;
+      } else if (k.status === 'active') {
+        actions = `
+          ${k.access_key ? `<button class="btn ghost" type="button" data-geminy-copy="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-link')} Copy</button>` : ''}
+          <button class="btn ghost" type="button" data-geminy-resend="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-mail')} Resend</button>
+          <button class="btn ghost danger" type="button" data-geminy-revoke="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-trash')} Revoke</button>`;
+      } else {
+        actions = `<button class="btn ghost" type="button" data-geminy-activate="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-unlock')} Activate</button>`;
+      }
       tr.innerHTML = `
         <td>${AutoponicsInvoicePdf.escapeHtml(k.company || '—')}</td>
         <td>${AutoponicsInvoicePdf.escapeHtml(k.email || '—')}</td>
@@ -1776,16 +1793,14 @@
         <td>${AutoponicsInvoicePdf.escapeHtml(formatWhen(k.created_at))}</td>
         <td>${AutoponicsInvoicePdf.escapeHtml(formatWhen(k.last_sent_at))}</td>
         <td class="mono">${AutoponicsInvoicePdf.escapeHtml(keyText)}</td>
-        <td class="actions">
-          ${k.access_key ? `<button class="btn ghost" type="button" data-geminy-copy="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-link')} Copy</button>` : ''}
-          ${k.status === 'active' ? `<button class="btn ghost" type="button" data-geminy-resend="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-mail')} Resend</button>
-          <button class="btn ghost danger" type="button" data-geminy-revoke="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-trash')} Revoke</button>` : `<button class="btn ghost" type="button" data-geminy-activate="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-unlock')} Activate</button>`}
-        </td>`;
+        <td class="actions">${actions}</td>`;
       tbody.appendChild(tr);
       const rowKey = k.access_key || '';
       tr.querySelector('[data-geminy-copy]')?.addEventListener('click', async () => {
         await copyText(rowKey, `Copied key for ${k.email}.`, 'Could not copy key.');
       });
+      tr.querySelector('[data-geminy-approve]')?.addEventListener('click', () => geminyKeyAction(k.id, 'approve', k.email));
+      tr.querySelector('[data-geminy-reject]')?.addEventListener('click', () => geminyKeyAction(k.id, 'reject', k.email));
       tr.querySelector('[data-geminy-resend]')?.addEventListener('click', () => geminyKeyAction(k.id, 'resend', k.email));
       tr.querySelector('[data-geminy-revoke]')?.addEventListener('click', () => geminyKeyAction(k.id, 'revoke', k.email));
       tr.querySelector('[data-geminy-activate]')?.addEventListener('click', () => geminyKeyAction(k.id, 'activate', k.email));
@@ -1794,8 +1809,10 @@
 
   async function geminyKeyAction(id, action, email) {
     const labels = {
+      approve: `Approve ${email} and email them a GeminyIoT login key?`,
+      reject: `Reject access request from ${email}? No key will be sent.`,
       resend: `Resend access email to ${email}?`,
-      revoke: `Revoke Geminy access for ${email}? Their key will stop working for new logins once the app checks status.`,
+      revoke: `Revoke Geminy access for ${email}?`,
       activate: `Re-activate Geminy access for ${email}?`
     };
     if (!confirm(labels[action] || `Confirm ${action}?`)) return;
@@ -1808,14 +1825,23 @@
       setMsg('geminy-msg', data?.error || `Could not ${action}.`, true);
       return;
     }
-    setMsg(
-      'geminy-msg',
-      action === 'resend'
-        ? `Resent key to ${email}.`
-        : action === 'revoke'
-          ? `Revoked ${email}.`
-          : `Activated ${email}.`
-    );
+    const messages = {
+      approve: data.emailed
+        ? `Approved ${email} — key emailed.`
+        : `Approved ${email}${data.email_error ? ` (email failed: ${data.email_error})` : ' — resend if needed.'}`,
+      reject: `Rejected ${email}.`,
+      resend: `Resent key to ${email}.`,
+      revoke: `Revoked ${email}.`,
+      activate: `Activated ${email}.`
+    };
+    setMsg('geminy-msg', messages[action] || `Done: ${action}.`);
+    if (action === 'approve' && data.access_key) {
+      try {
+        await copyText(data.access_key, 'Key copied to clipboard.', 'Could not copy key.');
+      } catch {
+        /* ignore */
+      }
+    }
     await loadGeminyKeys();
   }
 

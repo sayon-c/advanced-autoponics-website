@@ -12,6 +12,7 @@ ENVIRONMENT=dev
 # RESEND_API_KEY=re_xxxxxxxx
 # INVOICE_FROM=Advanced Autoponics, LLC <billing@advancedautoponics.com>
 # INVOICE_REPLY_TO=billing@advancedautoponics.com
-# GeminyIoT alpha signup emails also require RESEND_API_KEY.
+# GeminyIoT alpha signup emails also require RESEND_API_KEY (admin notify + key after approval).
 # GEMINY_APP_URL=https://app.advancedautoponics.com
 # GEMINY_FROM=Advanced Autoponics <info@advancedautoponics.com>
+# GEMINY_ADMIN_EMAIL=info@advancedautoponics.com

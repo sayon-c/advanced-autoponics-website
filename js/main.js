@@ -1118,7 +1118,8 @@ if (geminyForm) {
 
       if (statusEl) {
         statusEl.textContent =
-          data?.message || "Check your email for your GeminyIoT alpha login key.";
+          data?.message ||
+          "Request received. We’ll review it and email a login key only if approved.";
         statusEl.classList.add("is-ok");
       }
       geminyForm.reset();

@@ -36,35 +36,38 @@ Local: copy `.dev.vars.example` → `.dev.vars`.
 | Secret / var | Purpose |
 |--------------|---------|
 | `SESSION_SECRET` | Signs client portal session cookie `aa_inv_session`; salts analytics visitor fallback |
-| `ADMIN_SECRET` | Unlock gate + `Authorization: Bearer` / `X-Admin-Secret` for admin APIs + analytics summary |
+| `ADMIN_SECRET` | Unlock gate + admin APIs; also signs Geminy approve/reject email link tokens |
 | `CODE_VAULT_SECRET` | Encrypts access codes / Geminy keys for admin reveal (defaults to `ADMIN_SECRET`) |
 | `ADMIN_IP_ALLOWLIST` | Optional IP/CIDR gate for admin HTML + admin APIs (skipped when `ENVIRONMENT=dev` or unset) |
-| `RESEND_API_KEY` | Server-side invoice email **and** Geminy access-key email (**required** for public Geminy signup) |
+| `RESEND_API_KEY` | Invoice email, Geminy admin notify, applicant confirmation, and **key email after approval** |
 | `INVOICE_FROM` | Resend From header (invoices) |
 | `INVOICE_REPLY_TO` | Reply-To (defaults to `billing@advancedautoponics.com`) |
-| `GEMINY_APP_URL` | Login URL included in Geminy access emails (wrangler `vars`; default `https://app.advancedautoponics.com`) |
-| `GEMINY_FROM` | Optional Resend From for Geminy emails (defaults to `Advanced Autoponics <info@advancedautoponics.com>`) |
+| `GEMINY_APP_URL` | Login URL in approved-key emails (wrangler `vars`; default `https://app.advancedautoponics.com`) |
+| `GEMINY_FROM` | Resend From for Geminy emails (defaults to `info@`) |
+| `GEMINY_ADMIN_EMAIL` | Where pending-request notifications go (default `info@advancedautoponics.com`) |
 
-## GeminyIoT alpha signup
+## GeminyIoT alpha signup (approval required)
 
 Public form on the marketing homepage (`/#geminy-access`) posts to `POST /api/geminy/signup` with `{ email, company }`.
 
 Flow:
 
-1. Rate-limit by hashed IP (~8 requests / 15 minutes).
-2. Generate a `GEM-XXXX-XXXX` key (same spirit as invoice codes), store **PBKDF2 hash** + optional **AES-GCM vault** ciphertext in D1 table `geminy_keys`.
-3. Email the key via Resend. The HTTP response is only a success message (“Check your email”) — **no key in the JSON/HTML**.
-4. If the same email requests again while active, the existing vault key is resent (or regenerated if vault decrypt fails).
+1. Rate-limit by hashed IP (~8 / 15 minutes).
+2. Store a **pending** row in D1 `geminy_keys` — **no login key generated yet**.
+3. Optionally email the applicant a confirmation (“request received — we’ll review”).
+4. Notify admin (`GEMINY_ADMIN_EMAIL`) with HMAC-signed Approve / Reject links (`GET /api/geminy/decide?token=…`, 7-day expiry, single-use while still pending) **and** desk instructions.
+5. On **Approve** (email link or desk): generate `GEM-XXXX-XXXX`, store PBKDF2 hash + AES-GCM vault, email the key to the applicant. Public responses never include the key.
+6. On **Reject**: mark `rejected`; no key sent.
 
-If `RESEND_API_KEY` is missing, signup returns `503` with `code: resend_not_configured`.
+If `RESEND_API_KEY` is missing, signup still stores pending (admin can approve in desk), but approval cannot email a key until Resend is configured (`503` / `resend_not_configured`).
 
-Admin: open **Geminy access** in the billing desk (`#/geminy`) to list, copy, resend, revoke, or re-activate keys (`GET` / `PATCH /api/geminy/admin/keys`).
+Admin desk: **Geminy access** (`#/geminy`) — Approve / Reject pending; Resend / Revoke active keys (`GET` / `PATCH /api/geminy/admin/keys`).
 
 ## D1
 
 - Database name: `advanced-autoponics-invoices`
 - Binding: `DB`
-- Migrations: `migrations/` (`0001`–`0009`)
+- Migrations: `migrations/` (`0001`–`0009`; pending status uses existing `geminy_keys`)
 
 ```bash
 npx wrangler d1 migrations apply advanced-autoponics-invoices --local
