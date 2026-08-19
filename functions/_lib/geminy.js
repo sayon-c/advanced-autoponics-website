@@ -19,7 +19,7 @@ export function geminyAdminNotifyEmail(env) {
   return (
     clean(env?.GEMINY_ADMIN_EMAIL, 320) ||
     clean(env?.CONTACT_REPLY_TO, 320) ||
-    'info@advancedautoponics.com'
+    'sayonc@advancedautoponics.com'
   );
 }
 
@@ -35,7 +35,7 @@ function geminyMailReplyTo(env) {
   return (
     clean(env.GEMINY_REPLY_TO, 320) ||
     clean(env.CONTACT_REPLY_TO, 320) ||
-    'info@advancedautoponics.com'
+    'sayonc@advancedautoponics.com'
   );
 }
 
@@ -80,7 +80,7 @@ export function geminyAccessEmailContent({ company, accessKey, appUrl } = {}) {
     '',
     'Paste the key when prompted. Keep it private — anyone with the key can access your alpha login.',
     '',
-    'Questions? Email info@advancedautoponics.com or call (608) 320-0213.',
+    'Questions? Email sayonc@advancedautoponics.com or call (608) 320-0213.',
     '',
     '— Advanced Autoponics'
   ].join('\n');
@@ -97,7 +97,7 @@ export function geminyRequestReceivedEmailContent({ company } = {}) {
     '',
     'We’ll review it and email a login key only if approved. No key is issued automatically.',
     '',
-    'Questions? Email info@advancedautoponics.com or call (608) 320-0213.',
+    'Questions? Email sayonc@advancedautoponics.com or call (608) 320-0213.',
     '',
     '— Advanced Autoponics'
   ].join('\n');

@@ -1108,7 +1108,7 @@ if (geminyForm) {
           data?.error ||
           (res.status === 429
             ? "Too many requests. Please wait a few minutes and try again."
-            : "Could not complete signup. Try again or email info@advancedautoponics.com.");
+            : "Could not complete signup. Try again or email sayonc@advancedautoponics.com.");
         if (statusEl) {
           statusEl.textContent = msg;
           statusEl.classList.add("is-error");
@@ -1128,7 +1128,7 @@ if (geminyForm) {
     } catch {
       if (statusEl) {
         statusEl.textContent =
-          "Network error. Check your connection, or email info@advancedautoponics.com.";
+          "Network error. Check your connection, or email sayonc@advancedautoponics.com.";
         statusEl.classList.add("is-error");
       }
     } finally {

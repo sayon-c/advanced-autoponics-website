@@ -70,7 +70,7 @@ export async function onRequestPost({ request, env }) {
     return json({
       ok: true,
       message:
-        'You already have GeminyIoT access on file. If you need your key resent, email info@advancedautoponics.com.'
+        'You already have GeminyIoT access on file. If you need your key resent, email sayonc@advancedautoponics.com.'
     });
   }
 
