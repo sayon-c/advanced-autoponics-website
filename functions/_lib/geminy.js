@@ -8,8 +8,8 @@ const SIGNUP_MAX = 8;
 /** Decision links expire after 7 days. */
 const DECISION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-/** Placeholder until the GeminyIoT app URL is finalized. Override with GEMINY_APP_URL. */
-export const DEFAULT_GEMINY_APP_URL = 'https://app.advancedautoponics.com';
+/** GeminyIoT login URL in approval emails. Override with GEMINY_APP_URL. */
+export const DEFAULT_GEMINY_APP_URL = 'https://geminyiot.advancedautoponics.com';
 
 export function geminyAppUrl(env) {
   return clean(env?.GEMINY_APP_URL, 500) || DEFAULT_GEMINY_APP_URL;
@@ -400,10 +400,10 @@ const GENERIC_INVALID = {
   code: 'invalid_credentials'
 };
 
-/** Origins allowed to call the public verify API from a browser. */
+/** Origins allowed to call the public verify API from a browser. Never `*`. */
 export function geminyVerifyAllowedOrigins(env) {
   const origins = new Set([
-    'https://app.advancedautoponics.com',
+    'https://geminyiot.advancedautoponics.com',
     'https://www.advancedautoponics.com',
     'https://advancedautoponics.com'
   ]);

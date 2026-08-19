@@ -24,7 +24,7 @@
   "vars": {
     "INVOICE_FROM": "Advanced Autoponics, LLC <billing@advancedautoponics.com>",
     "INVOICE_REPLY_TO": "billing@advancedautoponics.com",
-    "GEMINY_APP_URL": "https://app.advancedautoponics.com",
+    "GEMINY_APP_URL": "https://geminyiot.advancedautoponics.com",
     "GEMINY_FROM": "Advanced Autoponics <billing@advancedautoponics.com>",
     "GEMINY_ADMIN_EMAIL": "sayonc@advancedautoponics.com",
     "GEMINY_REPLY_TO": "sayonc@advancedautoponics.com"

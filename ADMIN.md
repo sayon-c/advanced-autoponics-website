@@ -42,7 +42,7 @@ Local: copy `.dev.vars.example` → `.dev.vars`.
 | `RESEND_API_KEY` | Invoice email, Geminy admin notify, applicant confirmation, and **key email after approval** |
 | `INVOICE_FROM` | Resend From header (invoices) |
 | `INVOICE_REPLY_TO` | Reply-To (defaults to `billing@advancedautoponics.com`) |
-| `GEMINY_APP_URL` | Login URL in approved-key emails (wrangler `vars`; default `https://app.advancedautoponics.com`) |
+| `GEMINY_APP_URL` | Login URL in approved-key emails (wrangler `vars`; default `https://geminyiot.advancedautoponics.com`) |
 | `GEMINY_FROM` | Resend From for Geminy emails (defaults to `info@`) |
 | `GEMINY_ADMIN_EMAIL` | Where pending-request notifications go (default `sayonc@advancedautoponics.com`) |
 | `GEMINY_REPLY_TO` | Reply-To for Geminy emails (default `sayonc@advancedautoponics.com`) |
@@ -64,7 +64,7 @@ If `RESEND_API_KEY` is missing, signup still stores pending (admin can approve i
 
 Admin desk: **Geminy access** (`#/geminy`) — Approve / Reject pending; Resend / Revoke active keys (`GET` / `PATCH /api/geminy/admin/keys`).
 
-The GeminyIoT app verifies an emailed key with `POST /api/geminy/verify` `{ email, key }` (aliases: `access_key`, `code`, `password`). Success returns `{ ok, valid, email, company, access_id, status }` and never a cookie — the app owns its own session. Failures are always generic `401 invalid_credentials` (no email-exists leak). Rate-limited via the same hashed-IP login table as the invoice portal (~18 / 15 min). Live: `https://www.advancedautoponics.com/api/geminy/verify`.
+The GeminyIoT app verifies an emailed key with `POST /api/geminy/verify` `{ email, key }` (aliases: `access_key`, `code`, `password`). Success returns `{ ok, valid, email, company, access_id, status }` and never a cookie — the app owns its own session. Failures are always generic `401 invalid_credentials` (no email-exists leak). Rate-limited via the same hashed-IP login table as the invoice portal (~18 / 15 min). Live: `https://www.advancedautoponics.com/api/geminy/verify`. CORS allows `https://geminyiot.advancedautoponics.com`, `https://www.advancedautoponics.com`, `https://advancedautoponics.com`, the configured `GEMINY_APP_URL` origin, and localhost (OPTIONS preflight handled).
 
 ## D1
 
