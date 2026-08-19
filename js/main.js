@@ -57,7 +57,7 @@ if (menuBtn && siteNav) {
 }
 
 // Active nav on scroll
-const sectionIds = ["connectivity", "platform", "geminy", "problem", "solution", "delivery", "contact"];
+const sectionIds = ["connectivity", "platform", "geminy", "geminy-access", "problem", "solution", "delivery", "contact"];
 const sections = sectionIds
   .map((id) => document.getElementById(id))
   .filter(Boolean);
@@ -1045,5 +1045,94 @@ if (magneticBtns.length && finePointer && !reduceMotion) {
     btn.addEventListener("mouseleave", () => {
       btn.style.transform = "";
     });
+  });
+}
+
+// GeminyIoT alpha access signup
+const geminyForm = document.getElementById("geminySignupForm");
+if (geminyForm) {
+  const statusEl = document.getElementById("geminy-form-status");
+  const emailInput = document.getElementById("geminy-email");
+  const companyInput = document.getElementById("geminy-company");
+  const submitBtn = document.getElementById("geminySignupSubmit");
+
+  const syncAriaInvalid = (el) => {
+    if (!el?.matches) return;
+    try {
+      el.setAttribute("aria-invalid", el.matches(":user-invalid") ? "true" : "false");
+    } catch {
+      /* older browsers without :user-invalid */
+    }
+  };
+
+  geminyForm.addEventListener("blur", (e) => syncAriaInvalid(e.target), true);
+  geminyForm.addEventListener("input", (e) => {
+    if (e.target?.hasAttribute?.("aria-invalid")) syncAriaInvalid(e.target);
+  });
+
+  geminyForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (statusEl) {
+      statusEl.textContent = "";
+      statusEl.classList.remove("is-error", "is-ok");
+    }
+
+    if (!geminyForm.checkValidity()) {
+      geminyForm.reportValidity();
+      syncAriaInvalid(emailInput);
+      syncAriaInvalid(companyInput);
+      return;
+    }
+
+    const email = (emailInput?.value || "").trim();
+    const company = (companyInput?.value || "").trim();
+    geminyForm.classList.add("is-busy");
+    if (submitBtn) submitBtn.disabled = true;
+    if (statusEl) statusEl.textContent = "Sending…";
+
+    try {
+      const res = await fetch("/api/geminy/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email, company }),
+      });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        /* ignore */
+      }
+
+      if (!res.ok) {
+        const msg =
+          data?.error ||
+          (res.status === 429
+            ? "Too many requests. Please wait a few minutes and try again."
+            : "Could not complete signup. Try again or email info@advancedautoponics.com.");
+        if (statusEl) {
+          statusEl.textContent = msg;
+          statusEl.classList.add("is-error");
+        }
+        return;
+      }
+
+      if (statusEl) {
+        statusEl.textContent =
+          data?.message || "Check your email for your GeminyIoT alpha login key.";
+        statusEl.classList.add("is-ok");
+      }
+      geminyForm.reset();
+      emailInput?.removeAttribute("aria-invalid");
+      companyInput?.removeAttribute("aria-invalid");
+    } catch {
+      if (statusEl) {
+        statusEl.textContent =
+          "Network error. Check your connection, or email info@advancedautoponics.com.";
+        statusEl.classList.add("is-error");
+      }
+    } finally {
+      geminyForm.classList.remove("is-busy");
+      if (submitBtn) submitBtn.disabled = false;
+    }
   });
 }

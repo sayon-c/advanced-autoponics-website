@@ -46,10 +46,13 @@ function formatUsd(cents) {
 }
 
 /**
- * Send via Resend when RESEND_API_KEY is set.
+ * Low-level Resend send. Callers supply From / Reply-To.
  * @returns {{ sent: boolean, id?: string, error?: string, mode: 'resend'|'mailto' }}
  */
-export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {}) {
+export async function sendResendEmail(
+  env,
+  { to, subject, body, from, replyTo, defaultSubject = 'Message from Advanced Autoponics' } = {}
+) {
   if (!env?.RESEND_API_KEY) {
     return { sent: false, mode: 'mailto' };
   }
@@ -58,17 +61,19 @@ export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {})
     return { sent: false, mode: 'resend', error: 'A valid recipient email is required.' };
   }
 
-  // Prefer INVOICE_FROM (advancedautoponics.com must be verified in Resend).
-  const from =
-    clean(env.INVOICE_FROM, 320) ||
-    clean(env.CONTACT_FROM, 320) ||
-    'Advanced Autoponics, LLC <billing@advancedautoponics.com>';
+  const fromHeader = clean(from, 320);
+  if (!fromHeader) {
+    return { sent: false, mode: 'resend', error: 'From address is not configured.' };
+  }
 
-  // Reply-To: billing inbox so clients reply there even when From differs.
-  const resolvedReplyTo =
-    clean(replyTo, 320) ||
-    clean(env?.INVOICE_REPLY_TO, 320) ||
-    INVOICE_FINANCE_EMAIL;
+  const payload = {
+    from: fromHeader,
+    to: [emailTo],
+    subject: clean(subject, 200) || defaultSubject,
+    text: String(body || '').slice(0, 20000)
+  };
+  const resolvedReplyTo = clean(replyTo, 320);
+  if (resolvedReplyTo) payload.reply_to = resolvedReplyTo;
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -76,13 +81,7 @@ export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {})
       Authorization: `Bearer ${env.RESEND_API_KEY}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      from,
-      to: [emailTo],
-      subject: clean(subject, 200) || 'Invoice from Advanced Autoponics, LLC',
-      text: String(body || '').slice(0, 20000),
-      reply_to: resolvedReplyTo
-    })
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
@@ -108,6 +107,37 @@ export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {})
     /* ignore */
   }
   return { sent: true, mode: 'resend', id };
+}
+
+/**
+ * Send via Resend when RESEND_API_KEY is set.
+ * @returns {{ sent: boolean, id?: string, error?: string, mode: 'resend'|'mailto' }}
+ */
+export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {}) {
+  if (!env?.RESEND_API_KEY) {
+    return { sent: false, mode: 'mailto' };
+  }
+
+  // Prefer INVOICE_FROM (advancedautoponics.com must be verified in Resend).
+  const from =
+    clean(env.INVOICE_FROM, 320) ||
+    clean(env.CONTACT_FROM, 320) ||
+    'Advanced Autoponics, LLC <billing@advancedautoponics.com>';
+
+  // Reply-To: billing inbox so clients reply there even when From differs.
+  const resolvedReplyTo =
+    clean(replyTo, 320) ||
+    clean(env?.INVOICE_REPLY_TO, 320) ||
+    INVOICE_FINANCE_EMAIL;
+
+  return sendResendEmail(env, {
+    to,
+    subject,
+    body,
+    from,
+    replyTo: resolvedReplyTo,
+    defaultSubject: 'Invoice from Advanced Autoponics, LLC'
+  });
 }
 
 export function emailConfigured(env) {

@@ -8,7 +8,9 @@ Internal billing desk + visitor metrics for **Advanced Autoponics** (Cloudflare 
 |------|------|
 | Admin unlock (bookmark) | `/admin-invoices.html` |
 | Billing desk (after unlock) | `/aa-billing-desk.html#/dashboard` |
+| Geminy access (admin) | `/aa-billing-desk.html#/geminy` |
 | Client invoice portal | `/invoices` (`/invoices.html`) |
+| Geminy alpha signup (public) | `/#geminy-access` |
 
 Production: `https://www.advancedautoponics.com/admin-invoices.html`
 
@@ -31,21 +33,38 @@ npx wrangler secret put INVOICE_REPLY_TO
 
 Local: copy `.dev.vars.example` → `.dev.vars`.
 
-| Secret | Purpose |
-|--------|---------|
+| Secret / var | Purpose |
+|--------------|---------|
 | `SESSION_SECRET` | Signs client portal session cookie `aa_inv_session`; salts analytics visitor fallback |
 | `ADMIN_SECRET` | Unlock gate + `Authorization: Bearer` / `X-Admin-Secret` for admin APIs + analytics summary |
-| `CODE_VAULT_SECRET` | Encrypts access codes for admin reveal (defaults to `ADMIN_SECRET`) |
+| `CODE_VAULT_SECRET` | Encrypts access codes / Geminy keys for admin reveal (defaults to `ADMIN_SECRET`) |
 | `ADMIN_IP_ALLOWLIST` | Optional IP/CIDR gate for admin HTML + admin APIs (skipped when `ENVIRONMENT=dev` or unset) |
-| `RESEND_API_KEY` | Server-side invoice email |
-| `INVOICE_FROM` | Resend From header |
+| `RESEND_API_KEY` | Server-side invoice email **and** Geminy access-key email (**required** for public Geminy signup) |
+| `INVOICE_FROM` | Resend From header (invoices) |
 | `INVOICE_REPLY_TO` | Reply-To (defaults to `billing@advancedautoponics.com`) |
+| `GEMINY_APP_URL` | Login URL included in Geminy access emails (wrangler `vars`; default `https://app.advancedautoponics.com`) |
+| `GEMINY_FROM` | Optional Resend From for Geminy emails (defaults to `Advanced Autoponics <info@advancedautoponics.com>`) |
+
+## GeminyIoT alpha signup
+
+Public form on the marketing homepage (`/#geminy-access`) posts to `POST /api/geminy/signup` with `{ email, company }`.
+
+Flow:
+
+1. Rate-limit by hashed IP (~8 requests / 15 minutes).
+2. Generate a `GEM-XXXX-XXXX` key (same spirit as invoice codes), store **PBKDF2 hash** + optional **AES-GCM vault** ciphertext in D1 table `geminy_keys`.
+3. Email the key via Resend. The HTTP response is only a success message (“Check your email”) — **no key in the JSON/HTML**.
+4. If the same email requests again while active, the existing vault key is resent (or regenerated if vault decrypt fails).
+
+If `RESEND_API_KEY` is missing, signup returns `503` with `code: resend_not_configured`.
+
+Admin: open **Geminy access** in the billing desk (`#/geminy`) to list, copy, resend, revoke, or re-activate keys (`GET` / `PATCH /api/geminy/admin/keys`).
 
 ## D1
 
 - Database name: `advanced-autoponics-invoices`
 - Binding: `DB`
-- Migrations: `migrations/` (`0001`–`0008`)
+- Migrations: `migrations/` (`0001`–`0009`)
 
 ```bash
 npx wrangler d1 migrations apply advanced-autoponics-invoices --local

@@ -22,6 +22,9 @@ import * as adminAudit from '../functions/api/invoices/admin/audit.js';
 import * as adminViews from '../functions/api/invoices/admin/views.js';
 import * as adminResetLogin from '../functions/api/invoices/admin/reset-login-attempts.js';
 
+import * as geminySignup from '../functions/api/geminy/signup.js';
+import * as geminyAdminKeys from '../functions/api/geminy/admin/keys.js';
+
 const METHOD_MAP = {
   GET: 'onRequestGet',
   POST: 'onRequestPost',
@@ -59,7 +62,9 @@ const ROUTES = [
   {
     match: (p) => (p === '/api/invoices/admin/reset-login-attempts' ? {} : null),
     mod: adminResetLogin
-  }
+  },
+  { match: (p) => (p === '/api/geminy/signup' ? {} : null), mod: geminySignup },
+  { match: (p) => (p === '/api/geminy/admin/keys' ? {} : null), mod: geminyAdminKeys }
 ];
 
 function pagesContext(request, env, ctx, params = {}) {

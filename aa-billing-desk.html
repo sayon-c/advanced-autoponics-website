@@ -619,6 +619,7 @@
   <a class="nav-link" href="#/create" data-nav="create"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-plus"></use></svg> Create invoice</a>
   <a class="nav-link" href="#/invoices" data-nav="invoices"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-file"></use></svg> Invoices</a>
   <a class="nav-link" href="#/clients" data-nav="clients"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-users"></use></svg> Clients &amp; codes</a>
+  <a class="nav-link" href="#/geminy" data-nav="geminy"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-key"></use></svg> Geminy access</a>
   <a class="nav-link" href="#/activity" data-nav="activity"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-eye"></use></svg> Views &amp; activity</a>
   <a class="nav-link" href="#/settings" data-nav="settings"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-bank"></use></svg> Settings</a>
   <a class="nav-link" href="/invoices.html" target="_blank" rel="noopener noreferrer"><svg class="ico ico-sm" aria-hidden="true"><use href="#ico-link"></use></svg> Client portal</a>
@@ -631,6 +632,7 @@
   <a href="#/create" data-nav="create">Create</a>
   <a href="#/invoices" data-nav="invoices">Invoices</a>
   <a href="#/clients" data-nav="clients">Clients</a>
+  <a href="#/geminy" data-nav="geminy">Geminy</a>
   <a href="#/activity" data-nav="activity">Activity</a>
   <a href="#/settings" data-nav="settings">Settings</a>
   <a href="/invoices.html" target="_blank" rel="noopener noreferrer">Client portal</a>
@@ -715,6 +717,7 @@
       <a href="#/create"><strong>Create invoice</strong><span>New invoice for a client</span></a>
       <a href="#/invoices"><strong>Invoices</strong><span>Status, filters, send &amp; PDF</span></a>
       <a href="#/clients"><strong>Clients &amp; codes</strong><span>Access codes &amp; login unlock</span></a>
+      <a href="#/geminy"><strong>Geminy access</strong><span>Alpha signup keys</span></a>
       <a href="#/activity"><strong>Views &amp; activity</strong><span>Who viewed what, audit log</span></a>
       <a href="#/settings"><strong>Settings</strong><span>ACH defaults (routing + account)</span></a>
     </div>
@@ -972,6 +975,46 @@
 
   
   </div>
+
+  <div class="view-panel" id="view-geminy" data-view="geminy">
+    <div class="admin-toolbar">
+      <div>
+        <p class="mono" style="color:var(--mute);margin:0">Product alpha</p>
+        <h1>GeminyIoT access</h1>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" type="button" id="btn-refresh-geminy">
+          <svg class="ico ico-sm" aria-hidden="true"><use href="#ico-refresh"></use></svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+    <p class="hint">Public signup at <code>/#geminy-access</code> emails a login key via Resend. Keys are hashed for verify and encrypted for admin reveal. Public API never returns plaintext.</p>
+    <p class="hint" id="geminy-meta">Loading…</p>
+    <section class="panel">
+      <div class="table-scroll">
+        <table class="inv-admin-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Last sent</th>
+              <th>Key</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="geminy-key-rows"></tbody>
+        </table>
+      </div>
+      <div class="empty-state hidden" id="geminy-empty">
+        <p>No Geminy access requests yet.</p>
+      </div>
+      <p class="msg" id="geminy-msg"></p>
+    </section>
+  </div>
+
   <div class="view-panel" id="view-activity" data-view="activity">
     <div class="admin-toolbar">
       <div>
@@ -1703,6 +1746,79 @@
         : `${total} failed attempt${total === 1 ? '' : 's'} across ${ips} IP hash${ips === 1 ? '' : 'es'} (last 15 minutes window is cleaned automatically).`;
   }
 
+  async function loadGeminyKeys() {
+    const meta = $('geminy-meta');
+    const tbody = $('geminy-key-rows');
+    const empty = $('geminy-empty');
+    if (!tbody) return;
+    const { res, data } = await api('/api/geminy/admin/keys');
+    if (!res.ok) {
+      if (res.status === 401) { logout(); return; }
+      if (meta) meta.textContent = data?.error || 'Could not load Geminy keys.';
+      setMsg('geminy-msg', data?.error || 'Could not load Geminy keys.', true);
+      return;
+    }
+    if (meta) {
+      const emailOk = data.email_configured ? 'Resend configured' : 'RESEND_API_KEY missing';
+      meta.textContent = `App URL: ${data.app_url || '—'} · ${emailOk} · ${ (data.keys || []).length } record(s)`;
+    }
+    setMsg('geminy-msg', '');
+    tbody.innerHTML = '';
+    const keys = data.keys || [];
+    if (empty) empty.classList.toggle('hidden', keys.length > 0);
+    for (const k of keys) {
+      const tr = document.createElement('tr');
+      const keyText = k.access_key || (k.key_available ? '—' : 'Unavailable');
+      tr.innerHTML = `
+        <td>${AutoponicsInvoicePdf.escapeHtml(k.company || '—')}</td>
+        <td>${AutoponicsInvoicePdf.escapeHtml(k.email || '—')}</td>
+        <td>${AutoponicsInvoicePdf.escapeHtml(k.status || '—')}</td>
+        <td>${AutoponicsInvoicePdf.escapeHtml(formatWhen(k.created_at))}</td>
+        <td>${AutoponicsInvoicePdf.escapeHtml(formatWhen(k.last_sent_at))}</td>
+        <td class="mono">${AutoponicsInvoicePdf.escapeHtml(keyText)}</td>
+        <td class="actions">
+          ${k.access_key ? `<button class="btn ghost" type="button" data-geminy-copy="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-link')} Copy</button>` : ''}
+          ${k.status === 'active' ? `<button class="btn ghost" type="button" data-geminy-resend="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-mail')} Resend</button>
+          <button class="btn ghost danger" type="button" data-geminy-revoke="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-trash')} Revoke</button>` : `<button class="btn ghost" type="button" data-geminy-activate="${AutoponicsInvoicePdf.escapeHtml(k.id)}">${ico('ico-unlock')} Activate</button>`}
+        </td>`;
+      tbody.appendChild(tr);
+      const rowKey = k.access_key || '';
+      tr.querySelector('[data-geminy-copy]')?.addEventListener('click', async () => {
+        await copyText(rowKey, `Copied key for ${k.email}.`, 'Could not copy key.');
+      });
+      tr.querySelector('[data-geminy-resend]')?.addEventListener('click', () => geminyKeyAction(k.id, 'resend', k.email));
+      tr.querySelector('[data-geminy-revoke]')?.addEventListener('click', () => geminyKeyAction(k.id, 'revoke', k.email));
+      tr.querySelector('[data-geminy-activate]')?.addEventListener('click', () => geminyKeyAction(k.id, 'activate', k.email));
+    }
+  }
+
+  async function geminyKeyAction(id, action, email) {
+    const labels = {
+      resend: `Resend access email to ${email}?`,
+      revoke: `Revoke Geminy access for ${email}? Their key will stop working for new logins once the app checks status.`,
+      activate: `Re-activate Geminy access for ${email}?`
+    };
+    if (!confirm(labels[action] || `Confirm ${action}?`)) return;
+    const { res, data } = await api('/api/geminy/admin/keys', {
+      method: 'PATCH',
+      body: JSON.stringify({ id, action })
+    });
+    if (!res.ok) {
+      if (res.status === 401) { logout(); return; }
+      setMsg('geminy-msg', data?.error || `Could not ${action}.`, true);
+      return;
+    }
+    setMsg(
+      'geminy-msg',
+      action === 'resend'
+        ? `Resent key to ${email}.`
+        : action === 'revoke'
+          ? `Revoked ${email}.`
+          : `Activated ${email}.`
+    );
+    await loadGeminyKeys();
+  }
+
   async function resetLoginAttempts({ ip } = {}) {
     const payload = ip ? { ip } : { all: true };
     const label = ip ? `IP ${ip}` : 'all IPs';
@@ -2238,7 +2354,7 @@
   }
 
 
-  const VIEWS = ['dashboard', 'create', 'invoices', 'clients', 'activity', 'settings'];
+  const VIEWS = ['dashboard', 'create', 'invoices', 'clients', 'geminy', 'activity', 'settings'];
 
   function currentView() {
     const raw = (location.hash || '#/dashboard').replace(/^#\/?/, '').split('?')[0];
@@ -2265,6 +2381,7 @@
       loadClientViews();
     }
     if (view === 'clients') loadLoginAttempts();
+    if (view === 'geminy') loadGeminyKeys();
     if (view === 'settings') fillSettingsAch(companyAchDefault);
   }
 
@@ -2502,6 +2619,7 @@
 
   $('btn-reset-login-attempts')?.addEventListener('click', () => resetLoginAttempts());
   $('btn-refresh-login-attempts')?.addEventListener('click', () => loadLoginAttempts());
+  $('btn-refresh-geminy')?.addEventListener('click', () => loadGeminyKeys());
   $('btn-reset-login-ip')?.addEventListener('click', () => {
     const ip = $('reset-ip')?.value.trim();
     if (!ip) {

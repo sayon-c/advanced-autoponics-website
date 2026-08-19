@@ -169,6 +169,7 @@
         <a href="#connectivity" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-globe"/></svg>Network</a>
         <a href="#platform" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-layers"/></svg>Platform</a>
         <a href="#geminy" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-grid"/></svg>Geminy IoT</a>
+        <a href="#geminy-access" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-key"/></svg>Alpha access</a>
         <a href="#problem" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-alert"/></svg>Why Us</a>
         <a href="#solution" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-connect"/></svg>Solution</a>
         <a href="#delivery" data-nav><svg class="icon icon--nav" aria-hidden="true"><use href="#icon-stack"/></svg>Deliver</a>
@@ -443,9 +444,63 @@
             <div><dt>Protocols</dt><dd>Industry-standard</dd></div>
           </dl>
           <p class="spec-note">Connects to our controller and unified data layer. No proprietary lock-in on equipment you already own.</p>
-          <a href="#contact" class="btn btn-dark" data-magnetic>Get a walkthrough</a>
+          <a href="#geminy-access" class="btn btn-dark" data-magnetic>Request alpha access</a>
         </aside>
       </div>
+    </section>
+
+    <!-- GEMINY ALPHA ACCESS -->
+    <section class="section section--muted" id="geminy-access" aria-labelledby="geminy-access-title">
+      <div class="section-head reveal">
+        <p class="eyebrow">Early access</p>
+        <h2 class="section-title" id="geminy-access-title">GeminyIoT<br />alpha access</h2>
+        <p class="section-dek">Request a login key for the early version of the GeminyIoT application. This is an alpha build — functional, but unfinished. We’ll email your key; keep it private.</p>
+      </div>
+      <form class="geminy-signup reveal" id="geminySignupForm" novalidate>
+        <div class="geminy-signup-fields">
+          <div class="geminy-field">
+            <label for="geminy-email">Work email</label>
+            <input
+              type="email"
+              id="geminy-email"
+              name="email"
+              required
+              autocomplete="email"
+              enterkeyhint="next"
+              maxlength="320"
+              placeholder="you@company.com"
+              aria-describedby="geminy-email-hint geminy-form-status"
+              aria-errormessage="geminy-email-error"
+            />
+            <span id="geminy-email-hint" class="geminy-hint">We’ll send your login key here.</span>
+            <p id="geminy-email-error" class="geminy-field-error" hidden>Enter a valid email address.</p>
+          </div>
+          <div class="geminy-field">
+            <label for="geminy-company">Company</label>
+            <input
+              type="text"
+              id="geminy-company"
+              name="company"
+              required
+              autocomplete="organization"
+              enterkeyhint="done"
+              maxlength="200"
+              placeholder="Your company"
+              aria-describedby="geminy-form-status"
+              aria-errormessage="geminy-company-error"
+            />
+            <p id="geminy-company-error" class="geminy-field-error" hidden>Enter your company name.</p>
+          </div>
+        </div>
+        <div class="geminy-signup-actions">
+          <button type="submit" class="btn btn-accent" id="geminySignupSubmit" data-magnetic>
+            <span class="btn-kicker">Alpha · email delivery</span>
+            <span class="btn-label">Request access key</span>
+          </button>
+          <p class="geminy-signup-note">Questions: <a href="mailto:info@advancedautoponics.com">info@advancedautoponics.com</a> · <a href="tel:+16083200213">(608) 320-0213</a></p>
+        </div>
+        <p class="geminy-form-status" id="geminy-form-status" role="status" aria-live="polite"></p>
+      </form>
     </section>
 
     <!-- PROBLEM -->
@@ -649,6 +704,7 @@
         <a href="#connectivity">Network</a>
         <a href="#platform">Platform</a>
         <a href="#geminy">Geminy IoT</a>
+        <a href="#geminy-access">Alpha access</a>
         <a href="#insights">Insights</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -764,6 +820,11 @@
         <rect x="14" y="3" width="7" height="7"/>
         <rect x="3" y="14" width="7" height="7"/>
         <rect x="14" y="14" width="7" height="7"/>
+      </symbol>
+      <symbol id="icon-key" viewBox="0 0 24 24">
+        <circle cx="8" cy="15" r="4"/>
+        <path d="M11.5 12.5L20 4"/>
+        <path d="M16 5l3 3"/>
       </symbol>
       <symbol id="icon-alert" viewBox="0 0 24 24">
         <path d="M12 4L3 20h18L12 4z"/>

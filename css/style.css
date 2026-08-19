@@ -1730,6 +1730,126 @@ img {
   opacity: 1;
 }
 
+/* ---------- Geminy alpha signup ---------- */
+.geminy-signup {
+  max-width: 560px;
+  margin-top: 8px;
+}
+
+.geminy-signup-fields {
+  display: grid;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.geminy-field label {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--off-black);
+  margin-bottom: 8px;
+}
+
+.geminy-field input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--off-black);
+  background: var(--off-white);
+  border: 1px solid rgba(8, 8, 8, 0.18);
+  border-radius: 0;
+  padding: 14px 16px;
+  min-height: 48px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.geminy-field input::placeholder {
+  color: var(--grey-400);
+}
+
+.geminy-field input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+.geminy-field input:user-invalid {
+  border-color: #b42318;
+  background: #fff8f7;
+}
+
+.geminy-field input:user-valid {
+  border-color: rgba(110, 193, 119, 0.7);
+}
+
+.geminy-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--grey-200);
+}
+
+.geminy-field-error {
+  display: none;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: #b42318;
+}
+
+.geminy-field input:user-invalid ~ .geminy-field-error {
+  display: block;
+}
+
+.geminy-signup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px 32px;
+}
+
+.geminy-signup-note {
+  font-size: 0.9rem;
+  color: var(--grey-200);
+  max-width: 28ch;
+  line-height: 1.45;
+}
+
+.geminy-signup-note a {
+  color: var(--off-black);
+  border-bottom: 1px solid rgba(8, 8, 8, 0.25);
+}
+
+.geminy-signup-note a:hover,
+.geminy-signup-note a:focus-visible {
+  color: var(--accent-ink);
+  border-bottom-color: var(--accent);
+}
+
+.geminy-form-status {
+  margin-top: 20px;
+  min-height: 1.4em;
+  font-size: 0.95rem;
+  color: var(--grey-700);
+}
+
+.geminy-form-status.is-error {
+  color: #b42318;
+}
+
+.geminy-form-status.is-ok {
+  color: #1f6b3a;
+}
+
+.geminy-signup.is-busy .btn {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
 /* ---------- Contact ---------- */
 .contact {
   padding: var(--pad-y) var(--safe-r) var(--pad-y) var(--safe-x);

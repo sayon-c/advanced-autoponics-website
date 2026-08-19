@@ -89,5 +89,9 @@ export function isAdminHtmlPath(pathname) {
 
 export function isAdminApiPath(pathname) {
   const p = String(pathname || '');
-  return p.startsWith('/api/invoices/admin') || p.startsWith('/api/analytics/summary');
+  return (
+    p.startsWith('/api/invoices/admin') ||
+    p.startsWith('/api/geminy/admin') ||
+    p.startsWith('/api/analytics/summary')
+  );
 }
