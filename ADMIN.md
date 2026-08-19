@@ -64,6 +64,8 @@ If `RESEND_API_KEY` is missing, signup still stores pending (admin can approve i
 
 Admin desk: **Geminy access** (`#/geminy`) — Approve / Reject pending; Resend / Revoke active keys (`GET` / `PATCH /api/geminy/admin/keys`).
 
+The GeminyIoT app verifies an emailed key with `POST /api/geminy/verify` `{ email, key }` (aliases: `access_key`, `code`, `password`). Success returns `{ ok, valid, email, company, access_id, status }` and never a cookie — the app owns its own session. Failures are always generic `401 invalid_credentials` (no email-exists leak). Rate-limited via the same hashed-IP login table as the invoice portal (~18 / 15 min). Live: `https://www.advancedautoponics.com/api/geminy/verify`.
+
 ## D1
 
 - Database name: `advanced-autoponics-invoices`

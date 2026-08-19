@@ -1,5 +1,5 @@
 import { clean, clientIp } from './http.js';
-import { hashIp, newId, generateAccessCode, normalizeAccessCode, hashAccessCode } from './crypto.js';
+import { hashIp, newId, generateAccessCode, normalizeAccessCode, hashAccessCode, verifyAccessCode } from './crypto.js';
 import { emailConfigured, sendResendEmail } from './email.js';
 import { vaultSecret, encryptAccessCode, decryptAccessCode } from './code-vault.js';
 
@@ -391,4 +391,106 @@ export async function recordGeminySignupAttempt(env, ipHash) {
 
 export function newGeminyKeyId() {
   return newId('gem');
+}
+
+const GENERIC_INVALID = {
+  ok: false,
+  valid: false,
+  error: 'Invalid email or login key.',
+  code: 'invalid_credentials'
+};
+
+/** Origins allowed to call the public verify API from a browser. */
+export function geminyVerifyAllowedOrigins(env) {
+  const origins = new Set([
+    'https://app.advancedautoponics.com',
+    'https://www.advancedautoponics.com',
+    'https://advancedautoponics.com'
+  ]);
+  const configured = geminyAppUrl(env);
+  if (configured) {
+    try {
+      origins.add(new URL(configured).origin);
+    } catch {
+      /* ignore invalid GEMINY_APP_URL */
+    }
+  }
+  return origins;
+}
+
+export function geminyCorsHeaders(request, env) {
+  const origin = clean(request?.headers?.get?.('Origin'), 500);
+  const headers = {
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept',
+    'Access-Control-Max-Age': '86400',
+    Vary: 'Origin'
+  };
+  if (!origin) return headers;
+  const allowed = geminyVerifyAllowedOrigins(env);
+  const localDev = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+  if (allowed.has(origin) || localDev) {
+    headers['Access-Control-Allow-Origin'] = origin;
+  }
+  return headers;
+}
+
+/**
+ * Verify a GEM-XXXX-XXXX login key against D1 (hash compare).
+ * Generic failure for missing email, wrong key, pending, rejected, or revoked.
+ */
+export async function verifyGeminyLogin(env, { email, key } = {}) {
+  const normalizedEmail = normalizeEmail(email);
+  const normalizedKey = normalizeAccessCode(key).slice(0, 128);
+
+  if (!isValidEmail(normalizedEmail) || !normalizedKey || normalizedKey.length < 8) {
+    await hashAccessCode(normalizedKey || 'GEM-XXXX-XXXX').catch(() => {});
+    return { ok: false };
+  }
+
+  const { results } = await env.DB.prepare(
+    `SELECT id, email, company, key_hash, status
+     FROM geminy_keys
+     WHERE email = ? COLLATE NOCASE
+     ORDER BY created_at DESC
+     LIMIT 8`
+  )
+    .bind(normalizedEmail)
+    .all();
+
+  const rows = results || [];
+  if (!rows.length) {
+    await hashAccessCode(normalizedKey).catch(() => {});
+    return { ok: false };
+  }
+
+  let matched = null;
+  let compared = false;
+  for (const row of rows) {
+    if (!row.key_hash) continue;
+    compared = true;
+    if (await verifyAccessCode(normalizedKey, row.key_hash)) {
+      matched = row;
+      break;
+    }
+  }
+
+  if (!compared) {
+    await hashAccessCode(normalizedKey).catch(() => {});
+  }
+
+  if (!matched || matched.status !== 'active') {
+    return { ok: false };
+  }
+
+  return {
+    ok: true,
+    access_id: String(matched.id),
+    email: normalizeEmail(matched.email),
+    company: String(matched.company || '')
+  };
+}
+
+export function geminyVerifyInvalidBody() {
+  return { ...GENERIC_INVALID };
 }

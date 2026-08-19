@@ -23,6 +23,7 @@ import * as adminViews from '../functions/api/invoices/admin/views.js';
 import * as adminResetLogin from '../functions/api/invoices/admin/reset-login-attempts.js';
 
 import * as geminySignup from '../functions/api/geminy/signup.js';
+import * as geminyVerify from '../functions/api/geminy/verify.js';
 import * as geminyDecide from '../functions/api/geminy/decide.js';
 import * as geminyAdminKeys from '../functions/api/geminy/admin/keys.js';
 
@@ -65,6 +66,7 @@ const ROUTES = [
     mod: adminResetLogin
   },
   { match: (p) => (p === '/api/geminy/signup' ? {} : null), mod: geminySignup },
+  { match: (p) => (p === '/api/geminy/verify' ? {} : null), mod: geminyVerify },
   { match: (p) => (p === '/api/geminy/decide' ? {} : null), mod: geminyDecide },
   { match: (p) => (p === '/api/geminy/admin/keys' ? {} : null), mod: geminyAdminKeys }
 ];
