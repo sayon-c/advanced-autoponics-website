@@ -28,6 +28,10 @@
   --accent-ink: #080808;
 
   /* ── Semantic surfaces ── */
+  --bg: var(--off-white);
+  --bg-alt: var(--muted-surface);
+  --bg-dark: var(--off-black);
+  --bg-dark-alt: #121412;
   --dim-white: rgba(248, 248, 248, 0.1);
   --hero-lede: rgba(248, 248, 248, 0.6);
   --hero-atmosphere-mid: #0c0c0c;

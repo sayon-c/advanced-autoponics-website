@@ -17,6 +17,10 @@
   --accent: #6ec177;
   --accent-bright: #68c070;
   --accent-ink: #080808;
+  --bg: var(--off-white);
+  --bg-alt: var(--muted-surface);
+  --bg-dark: var(--off-black);
+  --bg-dark-alt: #121412;
   --dim-white: rgba(248, 248, 248, 0.1);
   --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-body: "Barlow", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -527,6 +531,46 @@ img {
 .btn-dark::after {
   background: var(--off-black);
   height: 2px;
+}
+
+.btn-solid {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  min-width: min(100%, 280px);
+  min-height: 60px;
+  padding: 16px 32px 18px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  border-radius: 0;
+  transition: background 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.btn-solid::after {
+  display: none;
+}
+
+.btn-solid .btn-kicker {
+  color: rgba(8, 8, 8, 0.58);
+}
+
+.btn-solid .btn-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent-ink);
+}
+
+.btn-solid:hover,
+.btn-solid:focus-visible {
+  background: var(--accent-bright);
+}
+
+.btn-solid:focus-visible {
+  outline: 2px solid var(--off-white);
+  outline-offset: 3px;
 }
 
 .text-link {
@@ -1287,18 +1331,23 @@ img {
 /* ---------- Sections ---------- */
 .section {
   padding: var(--pad-y) var(--safe-r) var(--pad-y) var(--safe-x);
-  background: var(--off-white);
+  background: var(--bg);
   color: var(--off-black);
   scroll-margin-top: calc(var(--header-h) + 12px);
 }
 
 .section--dark {
-  background: var(--off-black);
+  background: var(--bg-dark);
+  color: var(--off-white);
+}
+
+.section--dark-alt {
+  background: var(--bg-dark-alt);
   color: var(--off-white);
 }
 
 .section--muted {
-  background: var(--muted-surface);
+  background: var(--bg-alt);
 }
 
 .section-head {
@@ -1323,7 +1372,8 @@ img {
   margin-bottom: 18px;
 }
 
-.section--dark .eyebrow {
+.section--dark .eyebrow,
+.section--dark-alt .eyebrow {
   color: var(--accent);
 }
 
@@ -1345,7 +1395,8 @@ img {
   color: var(--grey-200);
 }
 
-.section--dark .section-dek {
+.section--dark .section-dek,
+.section--dark-alt .section-dek {
   color: var(--grey-400);
 }
 
@@ -1732,14 +1783,22 @@ img {
 
 /* ---------- Geminy alpha signup ---------- */
 .geminy-signup {
-  max-width: 560px;
-  margin-top: 8px;
+  max-width: 720px;
+  margin-top: 0;
+  padding: 32px 0 0;
+  border-top: 1px solid var(--dim-white);
+  accent-color: var(--accent);
 }
 
 .geminy-signup-fields {
   display: grid;
-  gap: 22px;
-  margin-bottom: 28px;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.geminy-field {
+  display: flex;
+  flex-direction: column;
 }
 
 .geminy-field label {
@@ -1747,58 +1806,64 @@ img {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 0.95rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--off-black);
-  margin-bottom: 8px;
+  color: var(--off-white);
+  margin-bottom: 10px;
 }
 
 .geminy-field input {
   width: 100%;
   box-sizing: border-box;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--off-black);
   background: var(--off-white);
-  border: 1px solid rgba(8, 8, 8, 0.18);
+  border: 2px solid transparent;
   border-radius: 0;
-  padding: 14px 16px;
-  min-height: 48px;
-  transition: border-color 0.2s, background 0.2s;
+  padding: 16px 18px;
+  min-height: 52px;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 .geminy-field input::placeholder {
   color: var(--grey-400);
 }
 
+.geminy-field input:hover {
+  border-color: rgba(110, 193, 119, 0.45);
+}
+
 .geminy-field input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(110, 193, 119, 0.18);
 }
 
 .geminy-field input:user-invalid {
-  border-color: #b42318;
+  border-color: #e24b4b;
   background: #fff8f7;
 }
 
 .geminy-field input:user-valid {
-  border-color: rgba(110, 193, 119, 0.7);
+  border-color: rgba(110, 193, 119, 0.85);
 }
 
 .geminy-hint {
   display: block;
   margin-top: 8px;
   font-size: 0.85rem;
-  color: var(--grey-200);
+  color: var(--grey-400);
+  line-height: 1.45;
 }
 
 .geminy-field-error {
   display: none;
   margin: 8px 0 0;
   font-size: 0.85rem;
-  color: #b42318;
+  color: #ff8a80;
 }
 
 .geminy-field input:user-invalid ~ .geminy-field-error {
@@ -1807,26 +1872,31 @@ img {
 
 .geminy-signup-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 20px 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.geminy-signup-actions .btn-solid {
+  width: 100%;
+  min-width: 0;
 }
 
 .geminy-signup-note {
   font-size: 0.9rem;
-  color: var(--grey-200);
-  max-width: 28ch;
-  line-height: 1.45;
+  color: var(--grey-400);
+  max-width: 42ch;
+  line-height: 1.5;
 }
 
 .geminy-signup-note a {
-  color: var(--off-black);
-  border-bottom: 1px solid rgba(8, 8, 8, 0.25);
+  color: var(--off-white);
+  border-bottom: 1px solid rgba(110, 193, 119, 0.55);
 }
 
 .geminy-signup-note a:hover,
 .geminy-signup-note a:focus-visible {
-  color: var(--accent-ink);
+  color: var(--accent);
   border-bottom-color: var(--accent);
 }
 
@@ -1834,15 +1904,15 @@ img {
   margin-top: 20px;
   min-height: 1.4em;
   font-size: 0.95rem;
-  color: var(--grey-700);
+  color: var(--grey-400);
 }
 
 .geminy-form-status.is-error {
-  color: #b42318;
+  color: #ff8a80;
 }
 
 .geminy-form-status.is-ok {
-  color: #1f6b3a;
+  color: var(--accent);
 }
 
 .geminy-signup.is-busy .btn {
@@ -2566,7 +2636,8 @@ img {
     margin-bottom: clamp(36px, 6vw, 56px);
   }
 
-  .section--dark .section-dek {
+  .section--dark .section-dek,
+  .section--dark-alt .section-dek {
     color: rgba(248, 248, 248, 0.62);
   }
 
@@ -2651,6 +2722,12 @@ img {
     max-width: 280px;
     padding-top: 16px;
     padding-bottom: 18px;
+  }
+
+  .geminy-signup-actions .btn-solid {
+    width: 100%;
+    max-width: none;
+    min-height: 56px;
   }
 
   .statement-text {
