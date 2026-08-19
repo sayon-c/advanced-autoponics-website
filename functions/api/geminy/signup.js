@@ -107,11 +107,35 @@ export async function onRequestPost({ request, env }) {
   const secret = geminyDecisionSecret(env);
   let adminEmailed = false;
   let confirmEmailed = false;
+  let adminEmailError = null;
+  let confirmationEmailError = null;
 
-  if (emailConfigured(env) && secret) {
-    const approveToken = await signGeminyDecision({ id: rowId, action: 'approve', secret });
-    const rejectToken = await signGeminyDecision({ id: rowId, action: 'reject', secret });
-    const urls = geminyDecisionUrls(origin, approveToken, rejectToken);
+  if (!emailConfigured(env)) {
+    adminEmailError = 'RESEND_API_KEY is not configured.';
+    confirmationEmailError = adminEmailError;
+  } else {
+    if (!secret) {
+      console.error(
+        JSON.stringify({
+          event: 'geminy_signup_missing_decision_secret',
+          request_id: rowId
+        })
+      );
+    }
+    const approveToken = secret
+      ? await signGeminyDecision({ id: rowId, action: 'approve', secret })
+      : null;
+    const rejectToken = secret
+      ? await signGeminyDecision({ id: rowId, action: 'reject', secret })
+      : null;
+    const urls =
+      approveToken && rejectToken
+        ? geminyDecisionUrls(origin, approveToken, rejectToken)
+        : {
+            approveUrl: null,
+            rejectUrl: null,
+            deskUrl: `${String(origin || '').replace(/\/+$/, '')}/aa-billing-desk.html#/geminy`
+          };
 
     const adminSend = await sendGeminyAdminNotifyEmail(env, {
       company,
@@ -120,9 +144,15 @@ export async function onRequestPost({ request, env }) {
       ...urls
     });
     adminEmailed = Boolean(adminSend.sent);
+    if (!adminSend.sent) {
+      adminEmailError = adminSend.error || 'Admin notify email failed.';
+    }
 
     const confirmSend = await sendGeminyRequestReceivedEmail(env, { to: email, company });
     confirmEmailed = Boolean(confirmSend.sent);
+    if (!confirmSend.sent) {
+      confirmationEmailError = confirmSend.error || 'Confirmation email failed.';
+    }
   }
 
   // Never return a key. Success even if Resend is unset — admin can approve in desk.
@@ -132,6 +162,8 @@ export async function onRequestPost({ request, env }) {
       'Request received. We’ll review it and email a login key only if approved — nothing is issued automatically.',
     notified_admin: adminEmailed,
     confirmation_emailed: confirmEmailed,
-    email_configured: emailConfigured(env)
+    email_configured: emailConfigured(env),
+    ...(adminEmailError ? { admin_email_error: adminEmailError } : {}),
+    ...(confirmationEmailError ? { confirmation_email_error: confirmationEmailError } : {})
   });
 }

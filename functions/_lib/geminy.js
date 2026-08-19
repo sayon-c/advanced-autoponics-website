@@ -26,8 +26,9 @@ export function geminyAdminNotifyEmail(env) {
 function geminyMailFrom(env) {
   return (
     clean(env.GEMINY_FROM, 320) ||
+    clean(env.INVOICE_FROM, 320) ||
     clean(env.CONTACT_FROM, 320) ||
-    'Advanced Autoponics <info@advancedautoponics.com>'
+    'Advanced Autoponics <billing@advancedautoponics.com>'
   );
 }
 

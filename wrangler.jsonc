@@ -7,11 +7,11 @@
   //   CODE_VAULT_SECRET    — optional; encrypts access codes for admin reveal (defaults to ADMIN_SECRET)
   //   ADMIN_IP_ALLOWLIST   — optional comma-separated IPs/CIDRs (CF-Connecting-IP)
   //   ENVIRONMENT          — set `dev` locally to skip IP allowlist
-  //   RESEND_API_KEY       — invoice + Geminy access email (required for Geminy signup)
+  //   RESEND_API_KEY       — invoice + Geminy access email (required for Geminy signup; paste the key only, no quotes)
   //   INVOICE_FROM         — e.g. Advanced Autoponics, LLC <billing@advancedautoponics.com>
   //   INVOICE_REPLY_TO     — Reply-To (defaults to billing@advancedautoponics.com)
   //   GEMINY_APP_URL       — login destination linked in Geminy access emails
-  //   GEMINY_FROM          — optional Resend From for Geminy emails (defaults to info@)
+  //   GEMINY_FROM          — optional Resend From for Geminy emails (defaults to billing@; domain must be verified in Resend)
   //   GEMINY_ADMIN_EMAIL   — pending-request notify (defaults to sayonc@advancedautoponics.com)
   //   GEMINY_REPLY_TO      — Reply-To for Geminy emails (defaults to sayonc@advancedautoponics.com)
   "name": "advanced-autoponics-website",
@@ -25,7 +25,7 @@
     "INVOICE_FROM": "Advanced Autoponics, LLC <billing@advancedautoponics.com>",
     "INVOICE_REPLY_TO": "billing@advancedautoponics.com",
     "GEMINY_APP_URL": "https://app.advancedautoponics.com",
-    "GEMINY_FROM": "Advanced Autoponics <info@advancedautoponics.com>",
+    "GEMINY_FROM": "Advanced Autoponics <billing@advancedautoponics.com>",
     "GEMINY_ADMIN_EMAIL": "sayonc@advancedautoponics.com",
     "GEMINY_REPLY_TO": "sayonc@advancedautoponics.com"
   },

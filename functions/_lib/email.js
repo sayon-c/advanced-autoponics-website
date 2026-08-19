@@ -46,15 +46,38 @@ function formatUsd(cents) {
 }
 
 /**
+ * Resend keys are ASCII (`re_…`). Notes/Word pastes often wrap them in curly quotes,
+ * which makes Authorization non-ASCII and Resend returns 401 — while `emailConfigured`
+ * still looks true.
+ */
+export function resendApiKey(env) {
+  let raw = String(env?.RESEND_API_KEY ?? '')
+    .replace(/^\uFEFF/, '')
+    .trim();
+  raw = raw.replace(/^[\u2018\u2019\u201C\u201D"']+|[\u2018\u2019\u201C\u201D"']+$/g, '').trim();
+  return raw;
+}
+
+function logResendFailure(payload) {
+  try {
+    console.error(JSON.stringify({ event: 'resend_send_failed', ...payload }));
+  } catch {
+    console.error('resend_send_failed');
+  }
+}
+
+/**
  * Low-level Resend send. Callers supply From / Reply-To.
- * @returns {{ sent: boolean, id?: string, error?: string, mode: 'resend'|'mailto' }}
+ * Never logs the API key or Authorization header.
+ * @returns {{ sent: boolean, id?: string, error?: string, status?: number, mode: 'resend'|'mailto' }}
  */
 export async function sendResendEmail(
   env,
   { to, subject, body, from, replyTo, defaultSubject = 'Message from Advanced Autoponics' } = {}
 ) {
-  if (!env?.RESEND_API_KEY) {
-    return { sent: false, mode: 'mailto' };
+  const apiKey = resendApiKey(env);
+  if (!apiKey) {
+    return { sent: false, mode: 'mailto', error: 'RESEND_API_KEY is not configured.' };
   }
   const emailTo = clean(to, 320);
   if (!emailTo || !emailTo.includes('@')) {
@@ -75,28 +98,42 @@ export async function sendResendEmail(
   const resolvedReplyTo = clean(replyTo, 320);
   if (resolvedReplyTo) payload.reply_to = resolvedReplyTo;
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
+  let response;
+  try {
+    response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    const error = err?.message || 'Network error talking to email service.';
+    logResendFailure({ error, from: fromHeader });
+    return { sent: false, mode: 'resend', error };
+  }
 
   if (!response.ok) {
     let detail = '';
+    let code = '';
     try {
       const errBody = await response.json();
-      detail = errBody?.message || '';
+      detail = errBody?.message || errBody?.error || '';
+      code = errBody?.name || errBody?.statusCode || '';
     } catch {
       /* ignore */
     }
-    return {
-      sent: false,
-      mode: 'resend',
-      error: detail || 'Email service rejected the message.'
-    };
+    const error = detail
+      ? `Resend ${response.status}: ${detail}`
+      : `Resend ${response.status}: email service rejected the message.`;
+    logResendFailure({
+      status: response.status,
+      code: code || undefined,
+      error,
+      from: fromHeader
+    });
+    return { sent: false, mode: 'resend', status: response.status, error };
   }
 
   let id = null;
@@ -114,8 +151,8 @@ export async function sendResendEmail(
  * @returns {{ sent: boolean, id?: string, error?: string, mode: 'resend'|'mailto' }}
  */
 export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {}) {
-  if (!env?.RESEND_API_KEY) {
-    return { sent: false, mode: 'mailto' };
+  if (!resendApiKey(env)) {
+    return { sent: false, mode: 'mailto', error: 'RESEND_API_KEY is not configured.' };
   }
 
   // Prefer INVOICE_FROM (advancedautoponics.com must be verified in Resend).
@@ -141,5 +178,5 @@ export async function sendInvoiceEmail(env, { to, subject, body, replyTo } = {})
 }
 
 export function emailConfigured(env) {
-  return Boolean(env?.RESEND_API_KEY);
+  return Boolean(resendApiKey(env));
 }
