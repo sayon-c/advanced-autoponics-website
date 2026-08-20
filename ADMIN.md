@@ -43,7 +43,7 @@ Local: copy `.dev.vars.example` → `.dev.vars`.
 | `INVOICE_FROM` | Resend From header (invoices) |
 | `INVOICE_REPLY_TO` | Reply-To (defaults to `billing@advancedautoponics.com`) |
 | `GEMINY_APP_URL` | Login URL in approved-key emails (wrangler `vars`; default `https://geminyiot.advancedautoponics.com`) |
-| `GEMINY_FROM` | Resend From for Geminy emails (defaults to `info@`) |
+| `GEMINY_FROM` | Resend From for Geminy emails (defaults to `billing@advancedautoponics.com`) |
 | `GEMINY_ADMIN_EMAIL` | Where pending-request notifications go (default `sayonc@advancedautoponics.com`) |
 | `GEMINY_REPLY_TO` | Reply-To for Geminy emails (default `sayonc@advancedautoponics.com`) |
 
